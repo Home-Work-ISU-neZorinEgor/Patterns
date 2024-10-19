@@ -1,6 +1,8 @@
 import uuid
 from abc import ABC, abstractmethod
 
+from src.utils.validator import Validator
+
 
 class BaseModel(ABC):
     def __init__(self):
@@ -9,6 +11,11 @@ class BaseModel(ABC):
     @property
     def uuid(self):
         return self.__uuid
+
+    @uuid.setter
+    def uuid(self, new_uui):
+        Validator.validate(new_uui, str)
+        self.__uuid = new_uui
 
     @abstractmethod
     def local_eq(self, other):

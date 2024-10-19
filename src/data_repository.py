@@ -26,3 +26,7 @@ class DataRepository:
     @staticmethod
     def recipe_id():
         return "recipe"
+
+    @staticmethod
+    def transaction():
+        return "transaction"

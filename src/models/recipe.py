@@ -3,16 +3,14 @@ from src.core.model import BaseModel
 from src.utils.validator import Validator
 from src.models.ingredient import Ingredient
 import datetime
-import uuid
 
 
 class Recipe(BaseModel):
-    __name: str
-    __ingredients: List[Ingredient]   # Список объектов Ingredient
-    __steps: List[str]
+    __name: str = ""
+    __ingredients: List[Ingredient] = []   # Список объектов Ingredient
+    __steps: List[str] = []
     __cooking_time_by_min: float | int
     __time = None
-    __test_uuid = uuid.uuid4()
 
     @property
     def name(self):
@@ -74,14 +72,14 @@ class Recipe(BaseModel):
     def __eq__(self, other):
         return self.name == other.name and self.ingredients == other.ingredients
 
-    def __str__(self):
-        ingredients_str = ', '.join([str(ingredient) for ingredient in self.ingredients])  # Используем геттер
-        steps_str = '\n'.join([f"{idx + 1}. {step}" for idx, step in enumerate(self.steps)])  # Используем геттер
-        return (
-            f"Recipe: {self.name}\n"  # Используем геттер
-            f"Ingredients: {ingredients_str}\n"
-            f"Steps:\n{steps_str}\n"
-            f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
-            f"Creation time: {self.time}\n"  # Используем геттер
-            f"UUID: {self.__test_uuid}"
-        )
+    # def __str__(self):
+    #     ingredients_str = ', '.join([str(ingredient) for ingredient in self.ingredients])  # Используем геттер
+    #     steps_str = '\n'.join([f"{idx + 1}. {step}" for idx, step in enumerate(self.steps)])  # Используем геттер
+    #     return (
+    #         f"Recipe: {self.name}\n"  # Используем геттер
+    #         f"Ingredients: {ingredients_str}\n"
+    #         f"Steps:\n{steps_str}\n"
+    #         f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
+    #         f"Creation time: {self.time}\n"  # Используем геттер
+    #         f"UUID: {self.__test_uuid}"
+    #     )

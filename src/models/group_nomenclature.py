@@ -19,6 +19,7 @@ class GroupNomenclature(BaseModel):
     @staticmethod
     def create(name="Сырье"):
         item = GroupNomenclature()
+        Validator.validate(name, type_=str)
         item.name = name  # Используем сеттер
         return item
 

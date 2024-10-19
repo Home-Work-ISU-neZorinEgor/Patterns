@@ -3,9 +3,9 @@ from src.utils.validator import Validator
 
 
 class Range(BaseModel):
-    __name = None
-    __conversion_factor = None
-    __base_unit = None
+    __name: str = None
+    __conversion_factor: int = None
+    __base_unit: 'Range' = None
 
     def local_eq(self, other):
         # Сравниваем по имени или по коду, если он есть

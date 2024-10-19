@@ -104,6 +104,13 @@ class StartService:
         except Exception as e:
             self.__error_proxy.error_message = str(e)
 
+    def __create_transaction(self):
+        try:
+            pass
+
+        except Exception as e:
+            self.__error_proxy.error_message = str(e)
+
     def create(self):
         self.__create_groups()
         self.__create_range()
