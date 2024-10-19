@@ -1,7 +1,7 @@
 from src.core.report import FormatEnum
 from src.errors.custom import InvalidType
 from src.errors.proxy import ErrorProxy
-from src.errors.validator import Validator
+from src.utils.validator import Validator
 from src.models.settings import Settings
 
 

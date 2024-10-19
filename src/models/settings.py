@@ -1,6 +1,6 @@
 from src.core.report import FormatEnum
 from src.errors.custom import InvalidType, InvalidLength
-from src.errors.validator import Validator
+from src.utils.validator import Validator
 from src.reports.csv_report import CSVReport
 from src.reports.json_report import JSONReport
 from src.reports.markdown_report import MarkdownReport

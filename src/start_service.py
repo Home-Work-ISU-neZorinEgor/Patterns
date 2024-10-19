@@ -1,5 +1,5 @@
 from src.errors.proxy import ErrorProxy
-from src.errors.validator import Validator
+from src.utils.validator import Validator
 from src.data_repository import DataRepository
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.ingredient import Ingredient

@@ -1,6 +1,6 @@
 from src.core.model import BaseModel
 from src.models.nomenclature import Nomenclature
-from src.errors.validator import Validator
+from src.utils.validator import Validator
 
 
 class Ingredient(BaseModel):

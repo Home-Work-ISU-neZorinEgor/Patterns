@@ -1,5 +1,5 @@
 from src.core.model import BaseModel
-from src.errors.validator import Validator
+from src.utils.validator import Validator
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.range import Range
 
@@ -52,7 +52,6 @@ class Nomenclature(BaseModel):
     def create(name, group, range):
         Validator.validate(name, type_=str)
         Validator.validate(group, type_=GroupNomenclature)
-        Validator.validate(range, type_=Range)
         item = Nomenclature()
         item.name = name
         item.group = group
