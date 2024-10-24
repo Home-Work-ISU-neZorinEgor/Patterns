@@ -14,7 +14,6 @@ class Organization(BaseModel):
     __type_of_ownership: str = ""
 
     def __init__(self, settings: Settings):
-        super().__init__()
         self.__inn = settings.inn
         self.__bic = settings.bic
         self.__account = settings.account

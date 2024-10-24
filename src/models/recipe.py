@@ -6,11 +6,25 @@ import datetime
 
 
 class Recipe(BaseModel):
-    __name: str = ""
-    __ingredients: List[Ingredient] = []   # Список объектов Ingredient
-    __steps: List[str] = []
-    __cooking_time_by_min: float | int
-    __time = None
+    __name: str = None
+    __ingredients: List[Ingredient] = None   # Список объектов Ingredient
+    __steps: List[str] = None
+    __cooking_time_by_min: float | int = None
+    __time: datetime.datetime = None
+
+    def local_eq(self, other):
+        return self.name == other.name and self.ingredients == other.ingredients
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls()
+        obj.name = data['name']
+        obj.cooking_time_by_min = data['cooking_time_by_min']
+        obj.ingredients = [Ingredient.from_dict(ingredient) for ingredient in data['ingredients']]
+        obj.steps = data['steps']
+        obj.time = datetime.datetime.fromtimestamp(data['time'])
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def name(self):
@@ -57,29 +71,22 @@ class Recipe(BaseModel):
         self.__time = new_time
 
     @staticmethod
-    def create(name: str, ingredients: List[Ingredient], steps: List[str], cooking_time_by_min: float | int):
+    def create(name: str, ingredients: List[Ingredient], steps: List[str], cooking_time_by_min: float | int, time):
         recipe = Recipe()
         recipe.name = name
         recipe.ingredients = ingredients
         recipe.steps = steps
         recipe.cooking_time_by_min = cooking_time_by_min
-        recipe.time = datetime.datetime.now(datetime.UTC)
+        recipe.time = time
         return recipe
 
-    def local_eq(self, other):
-        return self.name == other.name and self.ingredients == other.ingredients
-
-    def __eq__(self, other):
-        return self.name == other.name and self.ingredients == other.ingredients
-
-    # def __str__(self):
-    #     ingredients_str = ', '.join([str(ingredient) for ingredient in self.ingredients])  # Используем геттер
-    #     steps_str = '\n'.join([f"{idx + 1}. {step}" for idx, step in enumerate(self.steps)])  # Используем геттер
-    #     return (
-    #         f"Recipe: {self.name}\n"  # Используем геттер
-    #         f"Ingredients: {ingredients_str}\n"
-    #         f"Steps:\n{steps_str}\n"
-    #         f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
-    #         f"Creation time: {self.time}\n"  # Используем геттер
-    #         f"UUID: {self.__test_uuid}"
-    #     )
+    def __str__(self):
+        ingredients_str = ', '.join([str(ingredient) for ingredient in self.ingredients])  # Используем геттер
+        steps_str = '\n'.join([f"{idx + 1}. {step}" for idx, step in enumerate(self.steps)])  # Используем геттер
+        return (
+            f"Recipe: {self.name}\n"  # Используем геттер
+            f"Ingredients: {ingredients_str}\n"
+            f"Steps:\n{steps_str}\n"
+            f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
+            f"Creation time: {self.time}\n"  # Используем геттер
+        )

@@ -1,28 +1,18 @@
+from typing import Dict, List
+
 from fastapi import APIRouter
+
 from src.core.report import FormatEnum
-from typing import Dict
 
-from src.report_factory import ReportFactory
-from src.settings_manager import SettingsManager
-
-router = APIRouter(tags=["Reports"], prefix="/report")
+router = APIRouter(prefix="/report", tags=["Reports"])
 
 
-@router.get("/formats")
-def get_reports_formats() -> Dict:
+@router.get("/")
+def get_formats() -> dict[str, list[str]]:
+    formats = [i.name for i in FormatEnum]
     return {
-        "ok": True,
-        "formats": [enum.name for enum in FormatEnum]
+        "formats": formats,
     }
 
 
-@router.post("/create")
-def generate_report(report_format: FormatEnum, obj_dict: Dict):
-    manager = SettingsManager()
-    manager.from_json("../settings.json")
-    report_factory = ReportFactory(manager.settings)
-    reporter = report_factory.create(report_format.value)
-    return {
-        "ok": True,
-        "report": reporter.create()
-    }
+

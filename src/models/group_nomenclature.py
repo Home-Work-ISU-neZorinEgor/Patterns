@@ -3,7 +3,17 @@ from src.utils.validator import Validator
 
 
 class GroupNomenclature(BaseModel):
-    __name = ""
+    __name: str = ""
+
+    def local_eq(self, other):
+        return self.__name == other.__name
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls()
+        obj.name = data['name']
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def name(self):
@@ -13,14 +23,11 @@ class GroupNomenclature(BaseModel):
     def name(self, new_name: str):
         self.__name = new_name
 
-    def local_eq(self, other):
-        return self.__name == other.__name
-
     @staticmethod
     def create(name="Сырье"):
-        item = GroupNomenclature()
         Validator.validate(name, type_=str)
-        item.name = name  # Используем сеттер
+        item = GroupNomenclature()
+        item.name = name
         return item
 
     def __str__(self):

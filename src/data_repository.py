@@ -12,21 +12,21 @@ class DataRepository:
         return self.__data
 
     @staticmethod
-    def group_id():
+    def group_id() -> str:
         return "group"
 
     @staticmethod
-    def nomenclature_id():
+    def nomenclature_id() -> str:
         return "nomenclature"
 
     @staticmethod
-    def range_id():
+    def range_id() -> str:
         return "range"
 
     @staticmethod
-    def recipe_id():
+    def recipe_id() -> str:
         return "recipe"
 
     @staticmethod
-    def transaction():
+    def transaction_id() -> str:
         return "transaction"

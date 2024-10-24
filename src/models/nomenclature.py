@@ -6,23 +6,20 @@ from src.models.range import Range
 
 class Nomenclature(BaseModel):
     __name: str = None
-    __group = None
-    __range = None
-
-    def __init__(self):
-        super().__init__()
+    __group: GroupNomenclature = None
+    __range: Range = None
 
     def local_eq(self, other):
         return self.name == other.name
 
-    def __eq__(self, other):
-        return self.name == other.name
-
-    def __hash__(self):
-        """
-        Хэшируем по имени, группе и единице измерения
-        """
-        return hash((self.name, self.group, self.range))
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls()
+        obj.name = data['name']
+        obj.group = GroupNomenclature.from_dict(data['group'])
+        obj.range = Range.from_dict(data['range'])
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def name(self):
@@ -52,6 +49,7 @@ class Nomenclature(BaseModel):
     def create(name, group, range):
         Validator.validate(name, type_=str)
         Validator.validate(group, type_=GroupNomenclature)
+        Validator.validate(range, type_=Range)
         item = Nomenclature()
         item.name = name
         item.group = group
@@ -61,3 +59,9 @@ class Nomenclature(BaseModel):
     def __str__(self):
         group_str = str(self.__group) if self.__group else "Нету группы"
         return f"Продукт: {self.__name}, Группа: {group_str}, Единица: {self.__range}"
+
+    def __hash__(self):
+        """
+        Хэшируем по имени, группе и единице измерения
+        """
+        return hash((self.name, self.group, self.range))

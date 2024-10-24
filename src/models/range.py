@@ -37,7 +37,7 @@ class Range(BaseModel):
 
     @conversion_factor.setter
     def conversion_factor(self, new_factor):
-        Validator.validate(new_factor, type_=int)
+        Validator.validate(new_factor, type_=int | float)
         self.__conversion_factor = new_factor
 
     def convert_to_base(self, value):
@@ -48,6 +48,15 @@ class Range(BaseModel):
 
     def __str__(self):
         return f"uuid: {self.uuid}, name: {self.__name}, conversion_factor: {self.__conversion_factor}, base_unit: {self.__base_unit}"
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls()
+        obj.name = data['name']
+        obj.conversion_factor = data['conversion_factor']
+        obj.base_unit = data['base_unit']
+        obj.uuid = data['uuid']
+        return obj
 
     @staticmethod
     def create(name, conversion_factor, base_unit=None):
