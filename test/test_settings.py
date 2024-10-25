@@ -2,7 +2,7 @@ import os.path
 
 import pytest
 
-from src.errors.custom import InvalidLength
+from src.exceptions.custom import InvalidLengthException
 from src.settings_manager import SettingsManager
 
 
@@ -76,15 +76,15 @@ def test_invalid_fields_len():
     """ Тест на загрузку полей не корректной длинны """
     settings_manager = SettingsManager()
 
-    with pytest.raises(InvalidLength, match="INN must be exactly 12 characters long, not 1"):
+    with pytest.raises(InvalidLengthException, match="INN must be exactly 12 characters long, not 1"):
         settings_manager.from_dict({"inn": "1"})
-    with pytest.raises(InvalidLength, match="ACCOUNT must be exactly 11 characters long, not 1"):
+    with pytest.raises(InvalidLengthException, match="ACCOUNT must be exactly 11 characters long, not 1"):
         settings_manager.from_dict({"account": "2"})
-    with pytest.raises(InvalidLength, match="CORRESPONDENT_ACCOUNT must be exactly 11 characters long, not 1"):
+    with pytest.raises(InvalidLengthException, match="CORRESPONDENT_ACCOUNT must be exactly 11 characters long, not 1"):
         settings_manager.from_dict({"correspondent_account": "3"})
-    with pytest.raises(InvalidLength, match="BIC must be exactly 9 characters long, not 1"):
+    with pytest.raises(InvalidLengthException, match="BIC must be exactly 9 characters long, not 1"):
         settings_manager.from_dict({"bic": "4"})
-    with pytest.raises(InvalidLength, match="TYPE_OF_OWNERSHIP must be exactly 5 characters long, not 1"):
+    with pytest.raises(InvalidLengthException, match="TYPE_OF_OWNERSHIP must be exactly 5 characters long, not 1"):
         settings_manager.from_dict({"type_of_ownership": "5"})
 
 

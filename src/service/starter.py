@@ -1,7 +1,7 @@
 import datetime
 from pprint import pprint
 
-from src.errors.proxy import ErrorProxy
+from src.exceptions.proxy import ErrorProxy
 from src.models.storehouse import Storehouse
 from src.models.storehouse_transaction import TransactionType, StorehouseTransaction
 from src.utils.validator import Validator

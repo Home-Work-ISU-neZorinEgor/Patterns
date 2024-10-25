@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from src.core.report import ReportFormatEnum
 from src.dependency import get_settings, get_storage
-from src.errors.http import ModelNotFounded
+from src.exceptions.http import ModelNotFounded
 from src.models.settings import Settings
 from src.reports.factory import ReportFactory
 from src.storage import DataStorage

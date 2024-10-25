@@ -1,6 +1,6 @@
 from src.core.report import ReportFormatEnum, ABCReport
-from src.errors.custom import InvalidType
-from src.errors.proxy import ErrorProxy
+from src.exceptions.custom import InvalidTypeException
+from src.exceptions.proxy import ErrorProxy
 from src.utils.validator import Validator
 from src.models.settings import Settings
 
@@ -19,7 +19,7 @@ class ReportFactory:
 
         report_class = self.report_classes.get(report_format)
         if report_class is None:
-            raise InvalidType("Неподдерживаемый формат отчета")
+            raise InvalidTypeException("Неподдерживаемый формат отчета")
 
         return report_class()
 
@@ -30,5 +30,5 @@ class ReportFactory:
         base_format = self.settings.report_format
         report_class = self.report_classes.get(base_format)
         if report_class is None:
-            raise InvalidType("Неподдерживаемый формат отчета")
+            raise InvalidTypeException("Неподдерживаемый формат отчета")
         return report_class()
