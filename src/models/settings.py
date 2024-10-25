@@ -1,4 +1,4 @@
-from src.core.report import FormatEnum
+from src.core.report import ReportFormatEnum
 from src.errors.custom import InvalidType, InvalidLength
 from src.utils.validator import Validator
 from src.reports.csv_report import CSVReport
@@ -16,13 +16,13 @@ class Settings:
     __bic: str = "Default value"
     __name: str = "Default value"
     __type_of_ownership: str = "Default value"
-    __report_format: FormatEnum = FormatEnum.CSV
+    __report_format: ReportFormatEnum = ReportFormatEnum.CSV
     __report_classes = {
-        FormatEnum.CSV: CSVReport,
-        FormatEnum.MARKDOWN: MarkdownReport,
-        FormatEnum.JSON: JSONReport,
-        FormatEnum.XML: XMLReport,
-        FormatEnum.RTF: RTFReport,
+        ReportFormatEnum.CSV: CSVReport,
+        ReportFormatEnum.MARKDOWN: MarkdownReport,
+        ReportFormatEnum.JSON: JSONReport,
+        ReportFormatEnum.XML: XMLReport,
+        ReportFormatEnum.RTF: RTFReport,
     }
 
     @property
@@ -42,12 +42,12 @@ class Settings:
                 f"TYPE_OF_OWNERSHIP: {self.__type_of_ownership}")
 
     @property
-    def report_format(self) -> FormatEnum:
+    def report_format(self) -> ReportFormatEnum:
         return self.__report_format
 
     @report_format.setter
     def report_format(self, new_format) -> None:
-        Validator.validate(new_format, FormatEnum)
+        Validator.validate(new_format, ReportFormatEnum)
         self.__report_format = new_format
 
     @property

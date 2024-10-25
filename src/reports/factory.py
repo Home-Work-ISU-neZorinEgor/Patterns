@@ -1,4 +1,4 @@
-from src.core.report import FormatEnum
+from src.core.report import ReportFormatEnum, ABCReport
 from src.errors.custom import InvalidType
 from src.errors.proxy import ErrorProxy
 from src.utils.validator import Validator
@@ -11,11 +11,11 @@ class ReportFactory:
         self.error_proxy = ErrorProxy()
         self.report_classes = settings.report_classes
 
-    def create(self, report_format: FormatEnum):
+    def create(self, report_format: ReportFormatEnum) -> ABCReport:
         """
         Возвращает класс, в зависимости от входного аргумента
         """
-        Validator.validate(report_format, FormatEnum)
+        Validator.validate(report_format, ReportFormatEnum)
 
         report_class = self.report_classes.get(report_format)
         if report_class is None:

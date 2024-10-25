@@ -1,7 +1,7 @@
 import json
 import os
 
-from src.core.report import FormatEnum
+from src.core.report import ReportFormatEnum
 from src.errors.proxy import ErrorProxy
 from src.errors.custom import InvalidType, UnsupportableReportFormat
 from src.models.settings import Settings
@@ -46,8 +46,8 @@ class SettingsManager:
                 for key, value in file.items():
                     if hasattr(self.__settings, key):
                         if key == "report_format":
-                            if value in FormatEnum._value2member_map_:
-                                setattr(self.__settings, key, FormatEnum(value))
+                            if value in ReportFormatEnum._value2member_map_:
+                                setattr(self.__settings, key, ReportFormatEnum(value))
                             else:
                                 raise UnsupportableReportFormat(f"Invalid value for report_format: {value}")
                         else:

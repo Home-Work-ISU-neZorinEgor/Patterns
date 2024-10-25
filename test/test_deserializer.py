@@ -33,7 +33,6 @@ def test_recipe_deserialize():
         "steps": [
             "Тестовый шаг",
         ],
-        "time": 1727968784.338826,
         "uuid": "43801d89-2764-4b6b-989a-60718fdd9f2c"
     }
     test_recipe = Recipe.create(
@@ -50,7 +49,6 @@ def test_recipe_deserialize():
         ],
         name="Панкейки с черникой",
         steps=["Тестовый шаг"],
-        time=1727968784.338826
     )
     deserializer = Deserializer()
     recipe_from_deserializer = deserializer.deserialize(Recipe, dict_recipe)

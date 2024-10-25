@@ -2,7 +2,6 @@ from typing import List
 from src.core.model import BaseModel
 from src.utils.validator import Validator
 from src.models.ingredient import Ingredient
-import datetime
 
 
 class Recipe(BaseModel):
@@ -10,7 +9,6 @@ class Recipe(BaseModel):
     __ingredients: List[Ingredient] = None   # Список объектов Ingredient
     __steps: List[str] = None
     __cooking_time_by_min: float | int = None
-    __time: datetime.datetime = None
 
     def local_eq(self, other):
         return self.name == other.name and self.ingredients == other.ingredients
@@ -22,7 +20,6 @@ class Recipe(BaseModel):
         obj.cooking_time_by_min = data['cooking_time_by_min']
         obj.ingredients = [Ingredient.from_dict(ingredient) for ingredient in data['ingredients']]
         obj.steps = data['steps']
-        obj.time = datetime.datetime.fromtimestamp(data['time'])
         obj.uuid = data['uuid']
         return obj
 
@@ -62,22 +59,18 @@ class Recipe(BaseModel):
         Validator.validate(value, type_=int | float)
         self.__cooking_time_by_min = value
 
-    @property
-    def time(self):
-        return self.__time
-
-    @time.setter
-    def time(self, new_time):
-        self.__time = new_time
-
     @staticmethod
-    def create(name: str, ingredients: List[Ingredient], steps: List[str], cooking_time_by_min: float | int, time):
+    def create(name: str, ingredients: List[Ingredient], steps: List[str], cooking_time_by_min: float | int):
+        Validator.validate(name, type_=str)
+        Validator.validate(ingredients, type_=List[Ingredient])
+        Validator.validate(steps, type_=List[str])
+        Validator.validate(cooking_time_by_min, type_=float | int)
+
         recipe = Recipe()
         recipe.name = name
         recipe.ingredients = ingredients
         recipe.steps = steps
         recipe.cooking_time_by_min = cooking_time_by_min
-        recipe.time = time
         return recipe
 
     def __str__(self):
@@ -88,5 +81,4 @@ class Recipe(BaseModel):
             f"Ingredients: {ingredients_str}\n"
             f"Steps:\n{steps_str}\n"
             f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
-            f"Creation time: {self.time}\n"  # Используем геттер
         )
