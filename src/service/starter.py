@@ -1,5 +1,4 @@
 import datetime
-from pprint import pprint
 
 from src.exceptions.proxy import ErrorProxy
 from src.models.storehouse import Storehouse
@@ -126,10 +125,3 @@ class StartService:
     @property
     def has_error(self) -> bool:
         return not self.__error_proxy.is_empty
-
-
-repository = DataStorage()
-service = StartService(repository)
-service.create()
-print(service.error_message)
-pprint(repository.data)

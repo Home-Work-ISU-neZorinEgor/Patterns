@@ -17,10 +17,9 @@ def setup_service():
 def test_create_groups(setup_service):
     service, repository = setup_service
     service.create()
-    print(repository.data)
     # Проверяем, что группы созданы
     groups = repository.data[DataStorage.group_id()]
-    assert len(groups) == 5 and len (groups) != 0
+    assert len(groups) == 5 and len(groups) != 0
 
 
 def test_create_ranges(setup_service):

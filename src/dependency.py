@@ -6,14 +6,20 @@ from src.settings_manager import SettingsManager
 from src.service.starter import StartService
 
 
-def get_settings() -> Settings:
-    manager = SettingsManager()
-    manager.from_json(os.path.join("settings.json"))
-    return manager.settings
+class DependencyContainer:
+    """
+    Класс, возвращающий бины
+    See: https://docs.spring.io/spring-framework/docs/6.1.14/javadoc-api/org/springframework/beans/factory/BeanFactory.html
+    """
+    @staticmethod
+    def settings() -> Settings:
+        manager = SettingsManager()
+        manager.from_json(os.path.join("settings.json"))
+        return manager.settings
 
-
-def get_storage() -> DataStorage:
-    storage = DataStorage()
-    start_service = StartService(storage)
-    start_service.create()
-    return storage
+    @staticmethod
+    def storage() -> DataStorage:
+        storage = DataStorage()
+        start_service = StartService(storage)
+        start_service.create()
+        return storage

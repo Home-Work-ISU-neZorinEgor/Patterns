@@ -23,7 +23,7 @@ class ReportFactory:
 
         return report_class()
 
-    def create_default(self):
+    def create_default(self) -> ABCReport:
         """
         Возвращает класс в зависимости от значения по умолчанию из настроек
         """

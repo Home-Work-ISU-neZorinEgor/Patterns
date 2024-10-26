@@ -3,7 +3,7 @@ import json
 from fastapi import Depends
 
 from src.core.report import ReportFormatEnum
-from src.dependency import get_settings, get_storage
+from src.dependency import DependencyContainer
 from src.exceptions.http import ModelNotFounded
 from src.models.settings import Settings
 from src.reports.factory import ReportFactory
@@ -25,7 +25,7 @@ class ReportService:
             self,
             model: str,
             report_format: ReportFormatEnum,
-            settings: Settings = Depends(get_settings),
+            settings: Settings = Depends(DependencyContainer.settings),
     ):
         if not model.lower() in self.storage.data.keys():
             raise ModelNotFounded(model)
