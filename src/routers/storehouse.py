@@ -1,4 +1,5 @@
-from typing import  Optional
+from typing import Optional
+
 from fastapi import APIRouter, Depends
 
 from src.dependency import DependencyContainer
@@ -11,8 +12,8 @@ router = APIRouter(prefix="/storehouse", tags=["Storehouse"])
 
 @router.get("/")
 def get_storehouse_transaction(
-        sort_by: Optional[str],
+        field: Optional[str] = None,
         settings: Settings = Depends(DependencyContainer.settings),
         storage: DataStorage = Depends(DependencyContainer.storage),
 ):
-    return StorehouseService(settings=settings, storage=storage).get_transaction()
+    return StorehouseService(settings=settings, storage=storage).get_transaction(sort_by=field)

@@ -11,7 +11,7 @@ class StorehouseService:
         self.settings = settings
         self.factory = ReportFactory(self.settings).create_default()
 
-    def get_transaction(self):
+    def get_transaction(self, sort_by: str):
         transaction = self.storage.data[DataStorage.transaction_id()]
         transaction_report = list(map(self.factory.create, transaction))
         return list(map(json.loads, transaction_report))

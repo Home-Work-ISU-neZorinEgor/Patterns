@@ -43,6 +43,7 @@ class Nomenclature(BaseModel):
 
     @range.setter
     def range(self, new_range):
+        Validator.validate(new_range, type_=Range)
         self.__range = new_range
 
     @staticmethod
