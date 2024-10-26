@@ -15,6 +15,7 @@ class Recipe(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
         obj = cls()
         obj.name = data['name']
         obj.cooking_time_by_min = data['cooking_time_by_min']

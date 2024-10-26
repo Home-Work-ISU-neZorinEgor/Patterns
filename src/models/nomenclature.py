@@ -14,6 +14,7 @@ class Nomenclature(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
         obj = cls()
         obj.name = data['name']
         obj.group = GroupNomenclature.from_dict(data['group'])

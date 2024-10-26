@@ -26,7 +26,7 @@ class StorehouseTransaction(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
-        Validator.validate(data, type_=dict)
+        Validator.check_fields(data=data, model=cls)
         transaction = cls()
         transaction.storehouse = Storehouse.from_dict(data['storehouse'])
         transaction.nomenclature = Nomenclature.from_dict(data['nomenclature'])

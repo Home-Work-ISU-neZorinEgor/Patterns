@@ -12,6 +12,7 @@ class Ingredient(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
         obj = cls()
         obj.nomenclature = Nomenclature.from_dict(data['nomenclature'])
         obj.quantity = data['quantity']

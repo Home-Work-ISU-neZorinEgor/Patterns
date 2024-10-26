@@ -10,6 +10,7 @@ class GroupNomenclature(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
         obj = cls()
         obj.name = data['name']
         obj.uuid = data['uuid']

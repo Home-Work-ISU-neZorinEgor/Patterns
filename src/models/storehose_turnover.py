@@ -11,12 +11,19 @@ class StorehouseTurnover(BaseModel):
     __nomenclature: Nomenclature = None
     __range: Range = None
 
-    def local_eq(self, other):
-        pass
+    def local_eq(self, other: 'StorehouseTurnover'):
+        return self.__turnover == other.__turnover and self.__storehouse == other.storehouse
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        Validator.check_fields(data=data, model=cls)
+        obj = cls()
+        obj.storehouse = data["storehouse"]
+        obj.turnover = data["turnover"]
+        obj.nomenclature = data["nomenclature"]
+        obj.range = data["range"]
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def storehouse(self):

@@ -10,6 +10,7 @@ class Storehouse(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
         Validator.validate(data, type_=dict)  # Проверяем, что передан словарь
         Validator.validate(data.get('address'), str)  # Проверяем, что адрес является строкой
 

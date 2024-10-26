@@ -17,3 +17,10 @@ class UnsupportableReportFormatException(Exception):
     Ошибка, вызываемая при неверно указанном формате в json файле
     """
     pass
+
+
+class InvalidFieldException(Exception):
+    """
+    Ошибка, выбрасывающаяся, если при конвертации из словаря в модели нету такого поля
+    """
+    pass

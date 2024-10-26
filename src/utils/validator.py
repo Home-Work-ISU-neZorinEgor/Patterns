@@ -1,6 +1,6 @@
 from typing import Any, Type
 
-from src.exceptions.custom import InvalidTypeException, InvalidLengthException
+from src.exceptions.custom import InvalidTypeException, InvalidLengthException, InvalidFieldException
 
 
 class Validator:
@@ -24,3 +24,14 @@ class Validator:
         # Проверка длины, если длина указана и значение поддерживает len()
         if len_ is not None and hasattr(value, '__len__') and len(value) != len_:
             raise InvalidLengthException(f"argument must have a length of {len_}, but got {len(value)}")
+
+    @classmethod
+    def check_fields(cls, data: dict, model: type):
+        cls.validate(data, type_=dict)
+        cls.validate(model, type_=type)
+
+        attrs = dir(model)
+        model_fields = [attr for attr in attrs if not attr.startswith('_') and not callable(getattr(model, attr))]
+        for field in model_fields:
+            if field not in data.keys():
+                raise InvalidFieldException(f"Класс {model} не содержит property {field}")
