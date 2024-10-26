@@ -60,3 +60,17 @@ class StorehouseTurnover(BaseModel):
     def range(self, new_range):
         Validator.validate(new_range, type_=Range)
         self.__range = new_range
+
+    @staticmethod
+    def create(storehouse: Storehouse, turnover: int, nomenclature: Nomenclature, range: Range) -> 'StorehouseTurnover':
+        Validator.validate(storehouse, type_=Storehouse)
+        Validator.validate(turnover, type_=int)
+        Validator.validate(nomenclature, type_=Nomenclature)
+        Validator.validate(range, type_=Range)
+
+        item = StorehouseTurnover()
+        item.storehouse = storehouse
+        item.turnover = turnover
+        item.nomenclature = nomenclature
+        item.range = range
+        return item

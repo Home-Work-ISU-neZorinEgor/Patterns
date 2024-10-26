@@ -35,4 +35,3 @@ class Storehouse(BaseModel):
         storehouse = Storehouse()
         storehouse.address = address
         return storehouse
-
