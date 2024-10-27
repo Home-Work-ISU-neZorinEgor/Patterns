@@ -35,3 +35,6 @@ class Storehouse(BaseModel):
         storehouse = Storehouse()
         storehouse.address = address
         return storehouse
+
+    def __str__(self):
+        return f"Storehouse(address={self.address})"

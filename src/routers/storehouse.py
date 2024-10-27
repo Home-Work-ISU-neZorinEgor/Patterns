@@ -1,9 +1,11 @@
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends
 
 from src.dependency import DependencyContainer
 from src.models.settings import Settings
+from src.models.storehouse_transaction import StorehouseTransaction, TransactionType
+from src.models.turnhover_calculator import TurnoverCalculator
 from src.service.storehouse import StorehouseService
 from src.storage import DataStorage
 
@@ -17,3 +19,10 @@ def get_storehouse_transaction(
         storage: DataStorage = Depends(DependencyContainer.storage),
 ):
     return StorehouseService(settings=settings, storage=storage).get_transaction(sort_by=field)
+
+
+@router.post("/stock_count")
+def stock_count(transactions: List[dict]):
+    transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
+    return TurnoverCalculator().stock_count(transactions_lst)
+    # print(turnover)

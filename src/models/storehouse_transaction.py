@@ -31,9 +31,9 @@ class StorehouseTransaction(BaseModel):
         transaction.storehouse = Storehouse.from_dict(data['storehouse'])
         transaction.nomenclature = Nomenclature.from_dict(data['nomenclature'])
         transaction.quantity = data['quantity']
-        transaction.transaction_type = TransactionType(data['transaction_type'])
+        transaction.transaction_type = TransactionType(data['transaction_type']['value'] if isinstance(data['transaction_type'], dict) else data['transaction_type'])
         transaction.range = Range.from_dict(data['range'])
-        transaction.time = datetime.datetime.fromisoformat(data['time'])  # Предполагаем, что время передается в ISO формате
+        transaction.time = datetime.datetime.fromtimestamp(data['time'])  # Предполагаем, что время передается в ISO формате
 
         return transaction
 
@@ -115,3 +115,11 @@ class StorehouseTransaction(BaseModel):
         transaction.range = range
         transaction.time = time
         return transaction
+
+    def __str__(self):
+        return (f"StorehouseTransaction(storehouse={self.storehouse}, "
+                f"nomenclature={self.nomenclature}, "
+                f"quantity={self.quantity}, "
+                f"transaction_type={self.transaction_type.name}, "
+                f"range={self.range}, "
+                f"time={self.time.isoformat()})")

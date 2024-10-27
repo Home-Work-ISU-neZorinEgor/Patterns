@@ -74,3 +74,9 @@ class StorehouseTurnover(BaseModel):
         item.nomenclature = nomenclature
         item.range = range
         return item
+
+    def __str__(self):
+        return (f"StorehouseTurnover(storehouse={self.storehouse}, "
+                f"turnover={self.turnover}, "
+                f"nomenclature={self.nomenclature}, "
+                f"range={self.range})")

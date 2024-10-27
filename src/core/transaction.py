@@ -6,5 +6,5 @@ from src.models.storehouse_transaction import StorehouseTransaction
 
 class TransactionProcessor(ABC):
     @abstractmethod
-    def preprocess(self, transactions: List[StorehouseTransaction]):
+    def stock_count(self, transactions: List[StorehouseTransaction]):
         pass
