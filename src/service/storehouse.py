@@ -21,7 +21,7 @@ class StorehouseService:
 
     @staticmethod
     def stock_count(transactions: List[dict]):
-        transactions = list(map(StorehouseTransaction.from_dict, transactions))
-        return TurnoverCalculator().stock_count(transactions=transactions)
+        transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
+        return TurnoverCalculator().stock_count(transactions_lst)
 
 
