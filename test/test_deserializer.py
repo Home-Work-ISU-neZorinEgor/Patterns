@@ -1,37 +1,55 @@
+from src.models.group_nomenclature import GroupNomenclature
+from src.models.ingredient import Ingredient
+from src.models.nomenclature import Nomenclature
 from src.models.range import Range
+from src.models.recipe import Recipe
 from src.utils.deserializer import Deserializer
 
 
-def test_deserialize_range():
-    # Ожидаемый объект Range для сравнения
-    expected_range = Range.create(name="кг.", conversion_factor=1000,
-                                  base_unit=Range.create(name="гр.", conversion_factor=1, base_unit=None))
-
-    range_dict = {
-        "uuid": "65256fbf-ca34-4636-95f2-87615dc98648",
-        "name": "кг.",
-        "conversion_factor": 1000,
-        "base_unit": {
-            "uuid": "7f2d6b74-0d7f-46e8-8f94-5d3c75929e1b",
-            "name": "гр.",
-            "conversion_factor": 1,
-            "base_unit": None
-        }
+def test_recipe_deserialize():
+    dict_recipe = {
+        "cooking_time_by_min": 25,
+        "ingredients": [
+            {
+                "nomenclature": {
+                    "group": {
+                        "name": "Молочные продукты",
+                        "uuid": "6eafec95-1f0e-4278-931d-e353560b6c74"
+                    },
+                    "name": "Сливочное масло",
+                    "range": {
+                        "base_unit": None,
+                        "conversion_factor": 1.0,
+                        "name": "грамм",
+                        "uuid": "d2fcb3db-13fa-4986-b6ee-6ce33aff3d86"
+                    },
+                    "uuid": "d4c36c8d-fe56-4d9e-8cdc-8cd009c6b5f8"
+                },
+                "quantity": 30,
+                "uuid": "5f262279-a57b-4335-bb25-88a2c1ed458b"
+            }
+        ],
+        "name": "Панкейки с черникой",
+        "steps": [
+            "Тестовый шаг",
+        ],
+        "uuid": "43801d89-2764-4b6b-989a-60718fdd9f2c"
     }
-
-    deserialized_range = Deserializer.deserialize(Range, range_dict)
-
-    # Проверка основных свойств
-    assert deserialized_range.name == expected_range.name, "Название не совпадает"
-    assert deserialized_range.conversion_factor == expected_range.conversion_factor, "Коэффициент конверсии не совпадает"
-
-    # Проверка base_unit
-    assert deserialized_range.base_unit is not None, "base_unit должен быть не None"
-    assert deserialized_range.base_unit.name == expected_range.base_unit.name, "Название base_unit не совпадает"
-    assert deserialized_range.base_unit.conversion_factor == expected_range.base_unit.conversion_factor, "Коэффициент конверсии base_unit не совпадает"
-
-    # Проверка корректности полного сравнения объектов
-    assert deserialized_range == expected_range, "Объекты Range не совпадают"
-
-    # Дополнительная проверка вложенности base_unit
-    assert deserialized_range.base_unit.base_unit is None, "Вложенный base_unit должен быть None"
+    test_recipe = Recipe.create(
+        cooking_time_by_min=25,
+        ingredients=[
+            Ingredient.create(nomenclature=Nomenclature.create(
+                group=GroupNomenclature.create(name="Молочные продукты"),
+                name="Сливочное масло",
+                range=Range.create(base_unit=None, conversion_factor=1.0,
+                                   name="грамм")
+            ),
+                quantity=30
+            )
+        ],
+        name="Панкейки с черникой",
+        steps=["Тестовый шаг"],
+    )
+    deserializer = Deserializer()
+    recipe_from_deserializer = deserializer.deserialize(Recipe, dict_recipe)
+    assert recipe_from_deserializer == test_recipe

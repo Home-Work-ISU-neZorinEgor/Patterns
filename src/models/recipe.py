@@ -2,17 +2,27 @@ from typing import List
 from src.core.model import BaseModel
 from src.utils.validator import Validator
 from src.models.ingredient import Ingredient
-import datetime
-import uuid
 
 
 class Recipe(BaseModel):
-    __name: str
-    __ingredients: List[Ingredient]   # Список объектов Ingredient
-    __steps: List[str]
-    __cooking_time_by_min: float | int
-    __time = None
-    __test_uuid = uuid.uuid4()
+    __name: str = None
+    __ingredients: List[Ingredient] = None   # Список объектов Ingredient
+    __steps: List[str] = None
+    __cooking_time_by_min: float | int = None
+
+    def local_eq(self, other):
+        return self.name == other.name and self.ingredients == other.ingredients
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
+        obj = cls()
+        obj.name = data['name']
+        obj.cooking_time_by_min = data['cooking_time_by_min']
+        obj.ingredients = [Ingredient.from_dict(ingredient) for ingredient in data['ingredients']]
+        obj.steps = data['steps']
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def name(self):
@@ -50,29 +60,19 @@ class Recipe(BaseModel):
         Validator.validate(value, type_=int | float)
         self.__cooking_time_by_min = value
 
-    @property
-    def time(self):
-        return self.__time
-
-    @time.setter
-    def time(self, new_time):
-        self.__time = new_time
-
     @staticmethod
     def create(name: str, ingredients: List[Ingredient], steps: List[str], cooking_time_by_min: float | int):
+        Validator.validate(name, type_=str)
+        Validator.validate(ingredients, type_=List[Ingredient])
+        Validator.validate(steps, type_=List[str])
+        Validator.validate(cooking_time_by_min, type_=float | int)
+
         recipe = Recipe()
         recipe.name = name
         recipe.ingredients = ingredients
         recipe.steps = steps
         recipe.cooking_time_by_min = cooking_time_by_min
-        recipe.time = datetime.datetime.now(datetime.UTC)
         return recipe
-
-    def local_eq(self, other):
-        return self.name == other.name and self.ingredients == other.ingredients
-
-    def __eq__(self, other):
-        return self.name == other.name and self.ingredients == other.ingredients
 
     def __str__(self):
         ingredients_str = ', '.join([str(ingredient) for ingredient in self.ingredients])  # Используем геттер
@@ -82,6 +82,4 @@ class Recipe(BaseModel):
             f"Ingredients: {ingredients_str}\n"
             f"Steps:\n{steps_str}\n"
             f"Cooking time: {self.cooking_time_by_min} minutes\n"  # Используем геттер
-            f"Creation time: {self.time}\n"  # Используем геттер
-            f"UUID: {self.__test_uuid}"
         )

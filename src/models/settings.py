@@ -1,5 +1,5 @@
-from src.core.report import FormatEnum
-from src.errors.custom import InvalidType, InvalidLength
+from src.core.report import ReportFormatEnum
+from src.exceptions.custom import InvalidTypeException, InvalidLengthException
 from src.utils.validator import Validator
 from src.reports.csv_report import CSVReport
 from src.reports.json_report import JSONReport
@@ -16,13 +16,13 @@ class Settings:
     __bic: str = "Default value"
     __name: str = "Default value"
     __type_of_ownership: str = "Default value"
-    __report_format: FormatEnum = FormatEnum.CSV
+    __report_format: ReportFormatEnum = ReportFormatEnum.CSV
     __report_classes = {
-        FormatEnum.CSV: CSVReport,
-        FormatEnum.MARKDOWN: MarkdownReport,
-        FormatEnum.JSON: JSONReport,
-        FormatEnum.XML: XMLReport,
-        FormatEnum.RTF: RTFReport,
+        ReportFormatEnum.CSV: CSVReport,
+        ReportFormatEnum.MARKDOWN: MarkdownReport,
+        ReportFormatEnum.JSON: JSONReport,
+        ReportFormatEnum.XML: XMLReport,
+        ReportFormatEnum.RTF: RTFReport,
     }
 
     @property
@@ -32,7 +32,7 @@ class Settings:
     @report_classes.setter
     def report_classes(self, class_mapping: dict) -> None:
         if not isinstance(class_mapping, dict):
-            raise InvalidType("report_classes must be a dictionary")
+            raise InvalidTypeException("report_classes must be a dictionary")
         self.__report_classes = class_mapping
 
     def __str__(self):
@@ -42,12 +42,12 @@ class Settings:
                 f"TYPE_OF_OWNERSHIP: {self.__type_of_ownership}")
 
     @property
-    def report_format(self) -> FormatEnum:
+    def report_format(self) -> ReportFormatEnum:
         return self.__report_format
 
     @report_format.setter
     def report_format(self, new_format) -> None:
-        Validator.validate(new_format, FormatEnum)
+        Validator.validate(new_format, ReportFormatEnum)
         self.__report_format = new_format
 
     @property
@@ -57,9 +57,9 @@ class Settings:
     @inn.setter
     def inn(self, new_inn) -> None:
         if not isinstance(new_inn, str):
-            raise InvalidType("INN must be a string")
+            raise InvalidTypeException("INN must be a string")
         if len(new_inn) != 12:
-            raise InvalidLength(f"INN must be exactly 12 characters long, not {len(new_inn)}")
+            raise InvalidLengthException(f"INN must be exactly 12 characters long, not {len(new_inn)}")
         self.__inn = new_inn
 
     @property
@@ -69,9 +69,9 @@ class Settings:
     @account.setter
     def account(self, new_account) -> None:
         if not isinstance(new_account, str):
-            raise InvalidType("ACCOUNT must be a string")
+            raise InvalidTypeException("ACCOUNT must be a string")
         if len(new_account) != 11:
-            raise InvalidLength(f"ACCOUNT must be exactly 11 characters long, not {len(new_account)}")
+            raise InvalidLengthException(f"ACCOUNT must be exactly 11 characters long, not {len(new_account)}")
         self.__account = new_account
 
     @property
@@ -81,9 +81,9 @@ class Settings:
     @correspondent_account.setter
     def correspondent_account(self, new_correspondent_account) -> None:
         if not isinstance(new_correspondent_account, str):
-            raise InvalidType("CORRESPONDENT_ACCOUNT must be a string")
+            raise InvalidTypeException("CORRESPONDENT_ACCOUNT must be a string")
         if len(new_correspondent_account) != 11:
-            raise InvalidLength(
+            raise InvalidLengthException(
                 f"CORRESPONDENT_ACCOUNT must be exactly 11 characters long, not {len(new_correspondent_account)}")
         self.__correspondent_account = new_correspondent_account
 
@@ -94,9 +94,9 @@ class Settings:
     @bic.setter
     def bic(self, new_bic) -> None:
         if not isinstance(new_bic, str):
-            raise InvalidType("BIC must be a string")
+            raise InvalidTypeException("BIC must be a string")
         if len(new_bic) != 9:
-            raise InvalidLength(f"BIC must be exactly 9 characters long, not {len(new_bic)}")
+            raise InvalidLengthException(f"BIC must be exactly 9 characters long, not {len(new_bic)}")
         self.__bic = new_bic
 
     @property
@@ -106,7 +106,7 @@ class Settings:
     @name.setter
     def name(self, new_name) -> None:
         if not isinstance(new_name, str):
-            raise InvalidType("NAME must be a string")
+            raise InvalidTypeException("NAME must be a string")
         self.__name = new_name
 
     @property
@@ -116,8 +116,8 @@ class Settings:
     @type_of_ownership.setter
     def type_of_ownership(self, new_type_of_ownership) -> None:
         if not isinstance(new_type_of_ownership, str):
-            raise InvalidType("TYPE_OF_OWNERSHIP must be a string")
+            raise InvalidTypeException("TYPE_OF_OWNERSHIP must be a string")
         if len(new_type_of_ownership) != 5:
-            raise InvalidLength(
+            raise InvalidLengthException(
                 f"TYPE_OF_OWNERSHIP must be exactly 5 characters long, not {len(new_type_of_ownership)}")
         self.__type_of_ownership = new_type_of_ownership

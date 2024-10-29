@@ -1,9 +1,9 @@
 import json
 import os
 
-from src.core.report import FormatEnum
-from src.errors.proxy import ErrorProxy
-from src.errors.custom import InvalidType, UnsupportableReportFormat
+from src.core.report import ReportFormatEnum
+from src.exceptions.proxy import ErrorProxy
+from src.exceptions.custom import InvalidTypeException, UnsupportableReportFormatException
 from src.models.settings import Settings
 
 
@@ -37,7 +37,7 @@ class SettingsManager:
         """Загрузка настроек из JSON файла."""
         try:
             if not isinstance(path, str):
-                raise InvalidType("File path should be a string")
+                raise InvalidTypeException("File path should be a string")
             if not os.path.exists(path):
                 raise FileNotFoundError(f"File {path} does not exist")
 
@@ -46,10 +46,10 @@ class SettingsManager:
                 for key, value in file.items():
                     if hasattr(self.__settings, key):
                         if key == "report_format":
-                            if value in FormatEnum._value2member_map_:
-                                setattr(self.__settings, key, FormatEnum(value))
+                            if value in ReportFormatEnum._value2member_map_:
+                                setattr(self.__settings, key, ReportFormatEnum(value))
                             else:
-                                raise UnsupportableReportFormat(f"Invalid value for report_format: {value}")
+                                raise UnsupportableReportFormatException(f"Invalid value for report_format: {value}")
                         else:
                             setattr(self.__settings, key, value)
         except Exception as ex:
@@ -59,7 +59,7 @@ class SettingsManager:
         """Установка полей класса Settings из dict'а."""
         try:
             if not isinstance(input_dict, dict):
-                raise InvalidType("Var should be a dict")
+                raise InvalidTypeException("Var should be a dict")
 
             for key, value in input_dict.items():
                 if hasattr(self.__settings, key):

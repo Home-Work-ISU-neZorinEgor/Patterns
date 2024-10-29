@@ -1,19 +1,26 @@
-class InvalidType(Exception):
+class InvalidTypeException(Exception):
     """
     Исключение, вызываемое при неверном типе данных.
     """
     pass
 
 
-class InvalidLength(Exception):
+class InvalidLengthException(Exception):
     """
     Исключение, вызываемое при неверной длине данных.
     """
     pass
 
 
-class UnsupportableReportFormat(Exception):
+class UnsupportableReportFormatException(Exception):
     """
     Ошибка, вызываемая при неверно указанном формате в json файле
+    """
+    pass
+
+
+class InvalidFieldException(Exception):
+    """
+    Ошибка, выбрасывающаяся, если при конвертации из словаря в модели нету такого поля
     """
     pass

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from enum import Enum
+from enum import IntEnum
 from datetime import datetime
 
 
-class FormatEnum(Enum):
+class ReportFormatEnum(IntEnum):
     CSV = 1
     MARKDOWN = 2
     JSON = 3
@@ -15,7 +15,7 @@ class ABCReport(ABC):
     """
     Абстрактный класс для отчётов
     """
-    __format: FormatEnum = FormatEnum.CSV
+    __format: ReportFormatEnum = ReportFormatEnum.CSV
 
     @abstractmethod
     def create(self, data):

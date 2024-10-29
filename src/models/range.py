@@ -3,15 +3,25 @@ from src.utils.validator import Validator
 
 
 class Range(BaseModel):
-    __name = None
-    __conversion_factor = None
-    __base_unit = None
+    __name: str = None
+    __conversion_factor: int = None
+    __base_unit: 'Range' = None
 
     def local_eq(self, other):
         # Сравниваем по имени или по коду, если он есть
         if isinstance(other, Range):
             return self.__name == other.__name or self.__code == other.__code
         return False
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        Validator.check_fields(data=data, model=cls)
+        obj = cls()
+        obj.name = data['name']
+        obj.conversion_factor = data['conversion_factor']
+        obj.base_unit = data['base_unit']
+        obj.uuid = data['uuid']
+        return obj
 
     @property
     def name(self):
@@ -37,7 +47,7 @@ class Range(BaseModel):
 
     @conversion_factor.setter
     def conversion_factor(self, new_factor):
-        Validator.validate(new_factor, type_=int)
+        Validator.validate(new_factor, type_=int | float)
         self.__conversion_factor = new_factor
 
     def convert_to_base(self, value):

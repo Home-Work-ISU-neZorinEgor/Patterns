@@ -7,8 +7,8 @@
 /src/contracts/__pycache__/
 /src/core/__pycache__/
 /src/contracts/implements/__pycache__/
-/src/errors/__pycache__/
+/src/exceptions/__pycache__/
 /src/reports/__pycache__/
 /__pycache__/
 /src/contract.py
-/src/main.py
+/src/test.py
