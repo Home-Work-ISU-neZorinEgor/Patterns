@@ -30,7 +30,7 @@ class StorehouseService:
             data = json.load(f)
             data["block_time"] = new_block_time
             f.seek(0)  # Перемещаем указатель в начало файла
-            f.truncate()  # Очищаем файл
+            f.truncate()
             json.dump(data, f, ensure_ascii=False, indent=4)  # Перезаписываем файл с обновленными данными
         self.settings.block_time = new_block_time  # Обновляем текущее значение в настройках
         return {
