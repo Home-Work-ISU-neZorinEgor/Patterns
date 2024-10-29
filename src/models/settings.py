@@ -1,3 +1,6 @@
+import datetime
+from pathlib import Path
+
 from src.core.report import ReportFormatEnum
 from src.exceptions.custom import InvalidTypeException, InvalidLengthException
 from src.utils.validator import Validator
@@ -10,12 +13,15 @@ from src.reports.xml_report import XMLReport
 
 class Settings:
     """Модель настроек с кастомными ошибками."""
+    __path_to_settings_file: str = ""
+
     __inn: str = "Default value"
     __account: str = "Default value"
     __correspondent_account: str = "Default value"
     __bic: str = "Default value"
     __name: str = "Default value"
     __type_of_ownership: str = "Default value"
+    __block_time: int | float = datetime.datetime.now(datetime.UTC).timestamp()
     __report_format: ReportFormatEnum = ReportFormatEnum.CSV
     __report_classes = {
         ReportFormatEnum.CSV: CSVReport,
@@ -24,6 +30,15 @@ class Settings:
         ReportFormatEnum.XML: XMLReport,
         ReportFormatEnum.RTF: RTFReport,
     }
+
+    @property
+    def block_time(self):
+        return self.__block_time
+
+    @block_time.setter
+    def block_time(self, new_block_time):
+        Validator.validate(new_block_time, type_=int | float)
+        self.__block_time = new_block_time
 
     @property
     def report_classes(self):
@@ -112,6 +127,14 @@ class Settings:
     @property
     def type_of_ownership(self) -> str:
         return self.__type_of_ownership
+
+    @property
+    def path_to_settings_file(self):
+        return self.__path_to_settings_file
+
+    @path_to_settings_file.setter
+    def path_to_settings_file(self, new_path_to_settings_file: str):
+        self.__path_to_settings_file = new_path_to_settings_file
 
     @type_of_ownership.setter
     def type_of_ownership(self, new_type_of_ownership) -> None:

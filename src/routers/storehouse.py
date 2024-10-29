@@ -1,11 +1,10 @@
-from typing import Optional, List
+import datetime
 
 from fastapi import APIRouter, Depends
+from typing import Optional, List
 
 from src.dependency import DependencyContainer
 from src.models.settings import Settings
-from src.models.storehouse_transaction import StorehouseTransaction, TransactionType
-from src.models.turnhover_calculator import TurnoverCalculator
 from src.service.storehouse import StorehouseService
 from src.storage import DataStorage
 
@@ -23,6 +22,13 @@ def get_storehouse_transaction(
 
 @router.post("/stock_count")
 def stock_count(transactions: List[dict]):
-    transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
-    return TurnoverCalculator().stock_count(transactions_lst)
-    # print(turnover)
+    return StorehouseService.stock_count(transactions)
+
+
+@router.post("/set_block_time", status_code=200)
+def set_block_time(
+        new_block_time: float = datetime.datetime.now(datetime.UTC).timestamp(),
+        storage: DataStorage = Depends(DependencyContainer.storage),
+        settings: Settings = Depends(DependencyContainer.settings),
+):
+    return StorehouseService(storage=storage, settings=settings).set_block_time(new_block_time)

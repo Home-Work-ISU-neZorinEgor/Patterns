@@ -9,6 +9,7 @@ from src.service.starter import StartService
 class DependencyContainer:
     """
     Класс, возвращающий бины
+
     See: https://docs.spring.io/spring-framework/docs/6.1.14/javadoc-api/org/springframework/beans/factory/BeanFactory.html
     """
     @staticmethod
