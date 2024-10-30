@@ -11,7 +11,7 @@ from src.storage import DataStorage
 router = APIRouter(prefix="/storehouse", tags=["Storehouse"])
 
 
-@router.get("/")
+@router.get("/get_transaction")
 def get_storehouse_transaction(
         field: Optional[str] = None,
         settings: Settings = Depends(DependencyContainer.settings),
@@ -32,3 +32,11 @@ def set_block_time(
         settings: Settings = Depends(DependencyContainer.settings),
 ):
     return StorehouseService(storage=storage, settings=settings).set_block_time(new_block_time)
+
+
+@router.get("/get_block_time", status_code=200)
+def get_block_time(
+        storage: DataStorage = Depends(DependencyContainer.storage),
+        settings: Settings = Depends(DependencyContainer.settings),
+):
+    return StorehouseService(storage=storage, settings=settings).get_block_time()

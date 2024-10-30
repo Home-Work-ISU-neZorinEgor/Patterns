@@ -10,7 +10,7 @@ from src.storage import DataStorage
 router = APIRouter(prefix="/report", tags=["Reports"])
 
 
-@router.get("/")
+@router.get("/get_formats")
 def get_report_formats() -> dict[str, list[str]]:
     return ReportService.get_report_formats()
 

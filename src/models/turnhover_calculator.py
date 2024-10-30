@@ -7,7 +7,8 @@ from src.reports.json_report import JSONReport
 
 
 class TurnoverCalculator(TransactionProcessor):
-    def stock_count(self, transactions: List[StorehouseTransaction]) -> List[StorehouseTurnover]:
+    def stock_count(
+            self, transactions: List[StorehouseTransaction],) -> List[StorehouseTurnover]:
         storehouse_turnover: Dict[tuple, int] = {}
 
         # Рассчитываем обороты по каждой транзакции

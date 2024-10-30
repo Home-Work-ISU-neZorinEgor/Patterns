@@ -39,5 +39,8 @@ class StorehouseService:
             "new_time": self.settings.block_time
         }
 
+    def get_block_time(self):
+        return self.settings.block_time
+
 
 
