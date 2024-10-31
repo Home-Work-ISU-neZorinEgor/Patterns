@@ -25,6 +25,15 @@ def stock_count(transactions: List[dict]):
     return StorehouseService.stock_count(transactions)
 
 
+@router.post("/stock_count_before_block_time")
+def stock_count_before_block_time(
+        transactions: List[dict],
+        storage: DataStorage = Depends(DependencyContainer.storage),
+        settings: Settings = Depends(DependencyContainer.settings),
+):
+    return StorehouseService(storage=storage, settings=settings).stock_count_before_block_time(transactions)
+
+
 @router.post("/set_block_time", status_code=200)
 def set_block_time(
         new_block_time: float = datetime.datetime.now(datetime.UTC).timestamp(),

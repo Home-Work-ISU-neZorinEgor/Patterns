@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import List, Dict
 from src.core.transaction import TransactionProcessor
@@ -7,8 +8,39 @@ from src.reports.json_report import JSONReport
 
 
 class TurnoverCalculator(TransactionProcessor):
-    def stock_count(
-            self, transactions: List[StorehouseTransaction],) -> List[StorehouseTurnover]:
+    @staticmethod
+    def stock_time_before_block_time(transactions: List[StorehouseTransaction], block_time: float):
+        storehouse_turnover: Dict[tuple, int] = {}
+
+        # Рассчитываем обороты по каждой транзакции до даты блокировки
+        for transaction in transactions:
+            if transaction.time.timestamp() > block_time:
+                continue  # Пропускаем транзакции после block_period
+
+            key = (transaction.storehouse.uuid, transaction.nomenclature.uuid, transaction.range.uuid)
+
+            # Определяем количество в зависимости от типа транзакции
+            if transaction.transaction_type == TransactionType.INBOUND:
+                storehouse_turnover[key] = storehouse_turnover.get(key, 0) + transaction.quantity
+            elif transaction.transaction_type == TransactionType.OUTBOUND:
+                storehouse_turnover[key] = storehouse_turnover.get(key, 0) - transaction.quantity
+
+        # Создаем список StorehouseTurnover на основании накопленных данных
+        result = [
+            StorehouseTurnover.create(
+                storehouse=transaction.storehouse,  # Передаем экземпляр склада
+                turnover=turnover,
+                nomenclature=transaction.nomenclature,  # Передаем экземпляр номенклатуры
+                range=transaction.range,  # Передаем экземпляр единицы измерения
+            )
+            for key, turnover in storehouse_turnover.items()
+        ]
+
+        # Возвращаем JSON-отчет для всех записей оборота
+        return list(map(json.loads, list(map(JSONReport().create, result))))
+
+    @staticmethod
+    def stock_count(transactions: List[StorehouseTransaction]) -> List[StorehouseTurnover]:
         storehouse_turnover: Dict[tuple, int] = {}
 
         # Рассчитываем обороты по каждой транзакции

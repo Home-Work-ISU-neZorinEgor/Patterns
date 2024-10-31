@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from typing import List
 
 from src.models.settings import Settings
@@ -22,7 +23,11 @@ class StorehouseService:
     @staticmethod
     def stock_count(transactions: List[dict]):
         transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
-        return TurnoverCalculator().stock_count(transactions_lst)
+        return TurnoverCalculator.stock_count(transactions_lst)
+
+    def stock_count_before_block_time(self, transactions: List[dict]):
+        transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
+        return TurnoverCalculator.stock_time_before_block_time(transactions_lst, self.settings.block_time)
 
     def set_block_time(self, new_block_time) -> dict:
         old = self.settings.block_time
