@@ -21,17 +21,16 @@ def get_storehouse_transaction(
 
 
 @router.post("/stock_count")
-def stock_count(transactions: List[dict]):
-    return StorehouseService.stock_count(transactions)
-
-
-@router.post("/stock_count_before_block_time")
-def stock_count_before_block_time(
-        transactions: List[dict],
-        storage: DataStorage = Depends(DependencyContainer.storage),
+def stock_count(
+        user_block_time: Optional[bool] | None,
         settings: Settings = Depends(DependencyContainer.settings),
+        storage: DataStorage = Depends(DependencyContainer.storage),
 ):
-    return StorehouseService(storage=storage, settings=settings).stock_count_before_block_time(transactions)
+    return StorehouseService.stock_count(
+        transactions=storage.data[DataStorage.transaction_id()],
+        user_block_time=user_block_time,
+        block_time=settings.block_time,
+    )
 
 
 @router.post("/set_block_time", status_code=200)

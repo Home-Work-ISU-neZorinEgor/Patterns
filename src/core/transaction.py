@@ -1,18 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import List
-import datetime
-from src.models.storehouse_transaction import StorehouseTransaction, TransactionType
+from typing import List, Optional
+from src.models.storehouse_transaction import StorehouseTransaction
 
 
 class TransactionProcessor(ABC):
     @staticmethod
     @abstractmethod
-    def stock_count(transactions: List[StorehouseTransaction]):
-        raise NotImplemented()
-
-    @staticmethod
-    @abstractmethod
-    def stock_time_before_block_time(
-            transactions: List[StorehouseTransaction], block_time: float
-    ):
+    def stock_count(transactions: List[StorehouseTransaction], use_block_time: Optional[bool] | None):
         raise NotImplemented()
