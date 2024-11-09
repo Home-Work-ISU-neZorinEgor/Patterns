@@ -47,4 +47,10 @@ def add_nomenclature(
     return NomenclatureService(storage=storage, settings=settings).delete_nomenclature_by_uuid(uuid)
 
 
-
+@router.patch("/nomenclature")
+def update_nomenclature(
+        nomenclature: dict,
+        storage: DataStorage = Depends(DependencyContainer.storage),
+        settings: Settings = Depends(DependencyContainer.settings),
+):
+    return NomenclatureService(storage=storage, settings=settings).update_nomenclature(nomenclature)

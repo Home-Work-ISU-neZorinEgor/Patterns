@@ -34,6 +34,13 @@ class NomenclatureService:
         return len(self.storage.data[DataStorage.nomenclature_id()])
 
     def delete_nomenclature_by_uuid(self, uuid: str):
-        print(len(self.storage.data[DataStorage.nomenclature_id()]))
         self.storage.data[DataStorage.nomenclature_id()] = [i for i in self.storage.data[DataStorage.nomenclature_id()] if i.uuid != uuid]
-        print(len(self.storage.data[DataStorage.nomenclature_id()]))
+        return "ok"
+
+    def update_nomenclature(self, nomenclature: dict):
+        idx = None
+        for index, i in enumerate(self.storage.data[DataStorage.nomenclature_id()]):
+            if i.uuid == nomenclature["uuid"]:
+                idx = index
+        update_nomenclature = Nomenclature.from_dict(nomenclature)
+        self.storage.data[DataStorage.nomenclature_id()][idx] = update_nomenclature
