@@ -21,6 +21,7 @@ def get_storehouse_transaction(
 
 
 @router.post("/stock_count")
+
 def stock_count(
         user_block_time: Optional[bool] | None,
         settings: Settings = Depends(DependencyContainer.settings),
@@ -33,12 +34,14 @@ def stock_count(
     )
 
 
+
 @router.post("/set_block_time", status_code=200)
 def set_block_time(
         new_block_time: float = datetime.datetime.now(datetime.UTC).timestamp(),
         storage: DataStorage = Depends(DependencyContainer.storage),
         settings: Settings = Depends(DependencyContainer.settings),
 ):
+
     return StorehouseService(storage=storage, settings=settings).set_block_time(new_block_time)
 
 
