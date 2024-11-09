@@ -30,3 +30,5 @@ class DataStorage:
     @staticmethod
     def transaction_id() -> str:
         return "transaction"
+
+

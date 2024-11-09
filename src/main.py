@@ -5,7 +5,11 @@ from contextlib import asynccontextmanager
 
 from src.routers.reports import router as report_router
 from src.routers.storehouse import router as storehouse_router
+from src.routers.nomenclature import router as nomenclature_router
+from src.service.starter import StartService
+
 from src.settings_manager import SettingsManager
+from src.storage import DataStorage
 
 
 @asynccontextmanager
@@ -26,3 +30,4 @@ app = FastAPI(
 
 app.include_router(storehouse_router)
 app.include_router(report_router)
+app.include_router(nomenclature_router)

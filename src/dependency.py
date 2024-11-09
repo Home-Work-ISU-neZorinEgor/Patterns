@@ -12,6 +12,13 @@ class DependencyContainer:
 
     See: https://docs.spring.io/spring-framework/docs/6.1.14/javadoc-api/org/springframework/beans/factory/BeanFactory.html
     """
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super(DependencyContainer, cls).__new__(cls, *args, **kwargs)
+        return cls.__instance
+
     @staticmethod
     def settings() -> Settings:
         manager = SettingsManager()
