@@ -19,7 +19,7 @@ class StorehouseTransaction(BaseModel):
     __quantity: int = None
     __transaction_type: TransactionType = None
     __range: Range = None
-    __time: datetime.datetime = None
+    __time: datetime.datetime.timestamp = None
 
     def local_eq(self, other: 'StorehouseTransaction'):
         return self.storehouse == other.storehouse and self.time == other.time

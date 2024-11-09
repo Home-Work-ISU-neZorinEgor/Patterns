@@ -35,6 +35,7 @@ class SettingsManager:
 
     def from_json(self, path: str = os.path.join(os.pardir, 'settings.json')) -> None:
         """Загрузка настроек из JSON файла."""
+        self.settings.path_to_settings_file = os.path.abspath(path)
         try:
             if not isinstance(path, str):
                 raise InvalidTypeException("File path should be a string")
