@@ -9,13 +9,13 @@ from src.reports.json_report import JSONReport
 
 class TurnoverCalculator(TransactionProcessor):
     @staticmethod
-    def stock_count(transactions: List[StorehouseTransaction], block_time: float, use_block_time: Optional[float] = None) -> List[StorehouseTurnover]:
+    def stock_count(transactions: List[StorehouseTransaction], block_time: float, user_block_time: Optional[float] = None) -> List[StorehouseTurnover]:
         storehouse_turnover: Dict[tuple, int] = {}
         print(transactions[0].time.timestamp())
-        print(bool(use_block_time))
+        print(bool(user_block_time))
         # Рассчитываем обороты по каждой транзакции с учетом use_block_time
         for transaction in transactions:
-            if use_block_time and transaction.time.timestamp() > block_time:
+            if user_block_time and transaction.time.timestamp() > block_time:
                 continue  # Пропускаем транзакции после use_block_time
 
             key = (transaction.storehouse.uuid, transaction.nomenclature.uuid, transaction.range.uuid)

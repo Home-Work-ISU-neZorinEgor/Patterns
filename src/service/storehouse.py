@@ -21,14 +21,8 @@ class StorehouseService:
         return list(map(json.loads, transaction_report))
 
     @staticmethod
-
     def stock_count(transactions: List[StorehouseTransaction], user_block_time: Optional[bool] | None, block_time: float):
-        return TurnoverCalculator.stock_count(transactions, use_block_time=user_block_time, block_time=block_time)
-
-    def stock_count(transactions: List[dict]):
-        transactions_lst = list(map(StorehouseTransaction.from_dict, transactions))
-        return TurnoverCalculator().stock_count(transactions_lst)
-
+        return TurnoverCalculator.stock_count(transactions, user_block_time=user_block_time, block_time=block_time)
 
     def set_block_time(self, new_block_time) -> dict:
         old = self.settings.block_time
@@ -45,9 +39,5 @@ class StorehouseService:
             "new_time": self.settings.block_time
         }
 
-
     def get_block_time(self):
         return self.settings.block_time
-
-
-
