@@ -4,6 +4,7 @@ from src.storage import DataStorage
 from src.models.settings import Settings
 from src.settings_manager import SettingsManager
 from src.service.starter import StartService
+from src.service.starter import storage
 
 
 class DependencyContainer:
@@ -27,7 +28,4 @@ class DependencyContainer:
 
     @staticmethod
     def storage() -> DataStorage:
-        storage = DataStorage()
-        start_service = StartService(storage)
-        start_service.create()
         return storage

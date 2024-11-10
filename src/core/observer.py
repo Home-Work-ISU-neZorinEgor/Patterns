@@ -1,31 +1,35 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 
 from src.utils.validator import Validator
 
 
+class EventType(Enum):
+    DELETE_NOMENCLATURE = 0
+    UPDATE_NOMENCLATURE = 1
+
+
 class Observer(ABC):
     @abstractmethod
-    def update(self, message):
-        raise NotImplementedError("Метод update() должен быть реализован.")
+    def check_statement(self, event_type: EventType):
+        raise NotImplementedError("Метод check_statement() должен быть реализован.")
 
 
 class Subject:
     def __init__(self):
         self.__validator = Validator()
         self.__observers: list[Observer] = []
-        self.__validator.validate(self.__observers, list[Observer])
+        self.__validator.validate(self.__observers, type_=list[Observer])
 
     def attach(self, observer: Observer):
         self.__validator.validate(observer, Observer)
         if observer not in self.__observers:
             self.__observers.append(observer)
 
-    def detach(self, observer):
-        try:
+    def detach(self, observer: Observer):
+        if observer in self.__observers:
             self.__observers.remove(observer)
-        except ValueError:
-            pass
 
     def notify(self, message):
         for observer in self.__observers:
-            observer.update(message)
+            observer.check_statement(message)

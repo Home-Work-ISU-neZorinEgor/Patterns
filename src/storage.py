@@ -1,4 +1,13 @@
-class DataStorage:
+from src.core.observer import Observer, EventType
+
+
+class DataStorage(Observer):
+    def check_statement(self, event_type: EventType):
+        if event_type == EventType.DELETE_NOMENCLATURE:
+            pass
+        elif event_type == EventType.UPDATE_NOMENCLATURE:
+            pass
+
     __data = {}
     __instance = None
 

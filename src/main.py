@@ -3,6 +3,7 @@ import os.path
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from src.core.observer import Subject
 from src.routers.reports import router as report_router
 from src.routers.storehouse import router as storehouse_router
 from src.routers.nomenclature import router as nomenclature_router
@@ -16,6 +17,7 @@ from src.storage import DataStorage
 async def lifespan(instance: FastAPI):
     manager = SettingsManager()
     manager.from_json(os.path.join("settings.json"))
+    nomenclature_subject = Subject()
     yield
 
 
