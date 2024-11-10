@@ -21,8 +21,9 @@ class DataStorage(Observer):
                     for ingredients in recipe.ingredients:
                         if ingredients.nomenclature.uuid == entity.uuid:
                             ingredients.nomenclature = entity
+                # Меняем номенклатуры в транзакциях
                 for transaction in self.data[DataStorage.transaction_id()]:
-                    if transaction.nomenclature["uuid"] == entity.uuid:
+                    if transaction.nomenclature.uuid == entity.uuid:
                         transaction.nomenclature = entity
 
     __data = {}
