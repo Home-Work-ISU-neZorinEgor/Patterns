@@ -16,13 +16,15 @@ class DataStorage(Observer):
 
             case EventType.UPDATE_NOMENCLATURE:
                 print(self.__data[DataStorage.transaction_id()])
-                # Пробегаемся по номенклатурам в рецептах
+                # Меняем номенклатуры в рецептах
                 for recipe in self.__data[DataStorage.recipe_id()]:
                     for ingredients in recipe.ingredients:
                         if ingredients.nomenclature.uuid == entity.uuid:
                             ingredients.nomenclature = entity
+                for transaction in self.data[DataStorage.transaction_id()]:
+                    if transaction.nomenclature["uuid"] == entity.uuid:
+                        transaction.nomenclature = entity
 
-                # for storehouse in self.__data[DataStorage.]
     __data = {}
     __instance = None
 
