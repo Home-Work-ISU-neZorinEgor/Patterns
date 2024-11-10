@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 
+from src.core.model import BaseModel
 from src.utils.validator import Validator
 
 
@@ -11,7 +12,7 @@ class EventType(Enum):
 
 class Observer(ABC):
     @abstractmethod
-    def check_statement(self, event_type: EventType):
+    def check_statement(self, event_type: EventType, entity: BaseModel):
         raise NotImplementedError("Метод check_statement() должен быть реализован.")
 
 
@@ -30,6 +31,7 @@ class Subject:
         if observer in self.__observers:
             self.__observers.remove(observer)
 
-    def notify(self, message):
+    def notify(self, event_type: EventType, entity: BaseModel):
         for observer in self.__observers:
-            observer.check_statement(message)
+            observer.check_statement(event_type=event_type, entity=entity)
+

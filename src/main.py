@@ -17,7 +17,6 @@ from src.storage import DataStorage
 async def lifespan(instance: FastAPI):
     manager = SettingsManager()
     manager.from_json(os.path.join("settings.json"))
-    nomenclature_subject = Subject()
     yield
 
 

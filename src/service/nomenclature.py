@@ -2,10 +2,15 @@ import json
 
 from fastapi import HTTPException
 
+from src.core.observer import Subject, EventType
 from src.models.nomenclature import Nomenclature
 from src.models.settings import Settings
 from src.reports.factory import ReportFactory
+from src.service.starter import data_storage
 from src.storage import DataStorage
+
+nomenclature_subject = Subject()
+nomenclature_subject.attach(data_storage)
 
 
 class NomenclatureService:
@@ -30,11 +35,14 @@ class NomenclatureService:
         return len(self.storage.data[DataStorage.nomenclature_id()])
 
     def delete_nomenclature_by_uuid(self, uuid: str):
-        start_len = self.storage.data[DataStorage.nomenclature_id()]
-        self.storage.data[DataStorage.nomenclature_id()] = [i for i in self.storage.data[DataStorage.nomenclature_id()] if i.uuid != uuid]
-        if start_len == len(self.storage.data[DataStorage.nomenclature_id()]):
-            raise self.not_founded_by_uuid_exceptions
-        return "ok"
+        nomenclature_by_id = [i for i in self.storage.data[DataStorage.nomenclature_id()] if i.uuid == uuid]
+        if nomenclature_by_id:
+            nomenclature_subject.notify(event_type=EventType.DELETE_NOMENCLATURE, entity=nomenclature_by_id[0])
+        # start_len = self.storage.data[DataStorage.nomenclature_id()]
+        # self.storage.data[DataStorage.nomenclature_id()] = [i for i in self.storage.data[DataStorage.nomenclature_id()] if i.uuid != uuid]
+        # if start_len == len(self.storage.data[DataStorage.nomenclature_id()]):
+        #     raise self.not_founded_by_uuid_exceptions
+        # return "ok"
 
     def update_nomenclature(self, nomenclature: dict):
         idx = None
