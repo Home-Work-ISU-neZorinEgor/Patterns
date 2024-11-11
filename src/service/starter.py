@@ -125,3 +125,8 @@ class StartService:
     @property
     def has_error(self) -> bool:
         return not self.__error_proxy.is_empty
+
+
+data_storage = DataStorage()
+start_service = StartService(data_storage)
+start_service.create()

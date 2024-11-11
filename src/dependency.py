@@ -4,6 +4,7 @@ from src.storage import DataStorage
 from src.models.settings import Settings
 from src.settings_manager import SettingsManager
 from src.service.starter import StartService
+from src.service.starter import data_storage
 
 
 class DependencyContainer:
@@ -12,6 +13,13 @@ class DependencyContainer:
 
     See: https://docs.spring.io/spring-framework/docs/6.1.14/javadoc-api/org/springframework/beans/factory/BeanFactory.html
     """
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super(DependencyContainer, cls).__new__(cls, *args, **kwargs)
+        return cls.__instance
+
     @staticmethod
     def settings() -> Settings:
         manager = SettingsManager()
@@ -20,7 +28,4 @@ class DependencyContainer:
 
     @staticmethod
     def storage() -> DataStorage:
-        storage = DataStorage()
-        start_service = StartService(storage)
-        start_service.create()
-        return storage
+        return data_storage

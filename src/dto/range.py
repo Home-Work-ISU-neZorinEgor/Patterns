@@ -7,3 +7,4 @@ class RangeDTO(BaseModelDTO):
     name: str
     conversion_factor: int | float
     base_unit: Optional['RangeDTO']
+
