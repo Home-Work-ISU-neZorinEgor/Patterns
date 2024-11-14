@@ -41,3 +41,42 @@ class StorehouseService:
 
     def get_block_time(self):
         return self.settings.block_time
+
+    @staticmethod
+    def osv(datetime_start: float, datetime_end: float, address: str, block_time: float, transactions: List[StorehouseTransaction]):
+        # Фильтрация транзакций по временному диапазону
+        relevant_transactions = [
+            t for t in transactions
+            if t.storehouse.address == address and datetime_start <= t.time.timestamp() <= datetime_end
+        ]
+
+        # Вычисление оборотов (использование уже существующего метода с фильтрованными транзакциями)
+        turnover_data = StorehouseService.stock_count(
+            transactions=relevant_transactions,
+            user_block_time=False,
+            block_time=block_time,
+        )
+
+        # Расчёт начального остатка по транзакциям до datetime_start
+        initial_balance = {}
+        for t in transactions:
+            if t.storehouse.address == address and t.time.timestamp() < datetime_start:
+                nomenclature = t['nomenclature']['name']
+                quantity = t.quantity if t.transaction_type.value == 'INBOUND' else -t.quantity
+                initial_balance[nomenclature] = initial_balance.get(nomenclature, 0) + quantity
+
+        # Создание ОСВ
+        osv = []
+        for t in turnover_data:
+            nomenclature = t['nomenclature']['name']
+            turnover = t['turnover']
+            initial = initial_balance.get(nomenclature, 0)
+            final_balance = initial + turnover
+            osv.append({
+                "nomenclature": nomenclature,
+                "initial_balance": initial,
+                "turnover": turnover,
+                "final_balance": final_balance
+            })
+
+        return osv
