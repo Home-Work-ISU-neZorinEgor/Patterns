@@ -20,6 +20,23 @@ def get_storehouse_transaction(
     return StorehouseService(settings=settings, storage=storage).get_transaction(sort_by=field)
 
 
+@router.get("/osv")
+def calculate_osv(
+        datetime_start: float,
+        datetime_end: float,
+        address: str,
+        settings: Settings = Depends(DependencyContainer.settings),
+        storage: DataStorage = Depends(DependencyContainer.storage),
+):
+    return StorehouseService.osv(
+        datetime_start=datetime_start,
+        datetime_end=datetime_end,
+        address=address,
+        block_time=settings.block_time,
+        transactions=storage.data[DataStorage.transaction_id()]
+    )
+
+
 @router.post("/stock_count")
 def stock_count(
         user_block_time: Optional[bool] | None,
