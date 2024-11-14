@@ -1,6 +1,4 @@
-import io
 import json
-from fastapi.responses import FileResponse
 
 from src.reports.json_report import JSONReport
 from src.storage import DataStorage
@@ -24,3 +22,5 @@ class DataDumpService:
         with open(f"{dump_filename}.json", "w+") as f:
             f.write(json.dumps(dump_report, indent=4, ensure_ascii=False))
 
+    def load_data_from_dump(self, file_content):
+            return file_content
