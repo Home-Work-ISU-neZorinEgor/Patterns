@@ -29,4 +29,3 @@ async def load_data_flom_dump(
 ):
     # content =
     return DataDumpService(storage).load_data_from_dump(json.loads(await file.read()))
-
