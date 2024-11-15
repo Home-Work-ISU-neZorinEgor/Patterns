@@ -1,5 +1,4 @@
 import json
-from copy import deepcopy
 
 from fastapi import APIRouter, Depends, BackgroundTasks, UploadFile, File
 
@@ -27,5 +26,4 @@ async def load_data_flom_dump(
     file: UploadFile = File(...),
     storage: DataStorage = Depends(DependencyContainer.storage)
 ):
-    # content =
     return DataDumpService(storage).load_data_from_dump(json.loads(await file.read()))
