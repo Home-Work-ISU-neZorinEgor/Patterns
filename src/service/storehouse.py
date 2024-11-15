@@ -6,6 +6,7 @@ from src.models.settings import Settings
 from src.models.storehouse_transaction import StorehouseTransaction
 from src.models.turnhover_calculator import TurnoverCalculator
 from src.reports.factory import ReportFactory
+from src.settings_manager import SettingsManager
 from src.storage import DataStorage
 
 
@@ -25,14 +26,8 @@ class StorehouseService:
         return TurnoverCalculator.stock_count(transactions, user_block_time=user_block_time, block_time=block_time)
 
     def set_block_time(self, new_block_time) -> dict:
-        old = self.settings.block_time
-        with open(self.settings.path_to_settings_file, "r+", encoding="utf-8") as f:
-            data = json.load(f)
-            data["block_time"] = new_block_time
-            f.seek(0)  # Перемещаем указатель в начало файла
-            f.truncate()
-            json.dump(data, f, ensure_ascii=False, indent=4)  # Перезаписываем файл с обновленными данными
-        self.settings.block_time = new_block_time  # Обновляем текущее значение в настройках
+        old = SettingsManager().settings.block_time
+        SettingsManager().update_setting_in_file("block_time", new_block_time)
         return {
             "ok": True,
             "old_time": old,
@@ -41,3 +36,42 @@ class StorehouseService:
 
     def get_block_time(self):
         return self.settings.block_time
+
+    @staticmethod
+    def osv(datetime_start: float, datetime_end: float, address: str, block_time: float, transactions: List[StorehouseTransaction]):
+        # Фильтрация транзакций по временному диапазону
+        relevant_transactions = [
+            t for t in transactions
+            if t.storehouse.address == address and datetime_start <= t.time.timestamp() <= datetime_end
+        ]
+
+        # Вычисление оборотов (использование уже существующего метода с фильтрованными транзакциями)
+        turnover_data = StorehouseService.stock_count(
+            transactions=relevant_transactions,
+            user_block_time=False,
+            block_time=block_time,
+        )
+
+        # Расчёт начального остатка по транзакциям до datetime_start
+        initial_balance = {}
+        for t in transactions:
+            if t.storehouse.address == address and t.time.timestamp() < datetime_start:
+                nomenclature = t['nomenclature']['name']
+                quantity = t.quantity if t.transaction_type.value == 'INBOUND' else -t.quantity
+                initial_balance[nomenclature] = initial_balance.get(nomenclature, 0) + quantity
+
+        # Создание ОСВ
+        osv = []
+        for t in turnover_data:
+            nomenclature = t['nomenclature']['name']
+            turnover = t['turnover']
+            initial = initial_balance.get(nomenclature, 0)
+            final_balance = initial + turnover
+            osv.append({
+                "nomenclature": nomenclature,
+                "initial_balance": initial,
+                "turnover": turnover,
+                "final_balance": final_balance
+            })
+
+        return osv

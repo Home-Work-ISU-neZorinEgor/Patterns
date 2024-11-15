@@ -23,6 +23,7 @@ class Settings:
     __type_of_ownership: str = "Default value"
     __block_time: int | float = datetime.datetime.now(datetime.UTC).timestamp()
     __report_format: ReportFormatEnum = ReportFormatEnum.CSV
+    __first_start_up: bool = True
     __report_classes = {
         ReportFormatEnum.CSV: CSVReport,
         ReportFormatEnum.MARKDOWN: MarkdownReport,
@@ -30,6 +31,15 @@ class Settings:
         ReportFormatEnum.XML: XMLReport,
         ReportFormatEnum.RTF: RTFReport,
     }
+
+    @property
+    def first_start_up(self):
+        return self.__first_start_up
+
+    @first_start_up.setter
+    def first_start_up(self, new_first_start_up: bool):
+        Validator.validate(new_first_start_up, type_=bool)
+        self.__first_start_up = new_first_start_up
 
     @property
     def block_time(self):

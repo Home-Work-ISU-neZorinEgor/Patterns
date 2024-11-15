@@ -67,3 +67,29 @@ class SettingsManager:
                     setattr(self.__settings, key, value)
         except Exception as ex:
             self.set_exception(ex)
+
+    def update_setting_in_file(self, key: str, value) -> None:
+        """Обновляет значение настройки и сохраняет его в файле JSON."""
+        try:
+            # Проверяем, существует ли настройка с таким ключом
+            if not hasattr(self.__settings, key):
+                raise KeyError(f"Настройка '{key}' не найдена в Settings")
+
+            # Обновляем значение в объекте настроек
+            setattr(self.__settings, key, value)
+
+            # Обновляем JSON-файл
+            if os.path.exists(self.settings.path_to_settings_file):
+                with open(self.settings.path_to_settings_file, "r+", encoding="utf-8") as f:
+                    # Загружаем текущее содержимое
+                    file_data = json.load(f)
+                    # Обновляем значение в словаре
+                    file_data[key] = value
+                    # Перематываем файл и записываем новые данные
+                    f.seek(0)
+                    json.dump(file_data, f, indent=4, ensure_ascii=False)
+                    f.truncate()
+            else:
+                raise FileNotFoundError(f"Файл {self.settings.path_to_settings_file} не найден")
+        except Exception as ex:
+            self.set_exception(ex)
