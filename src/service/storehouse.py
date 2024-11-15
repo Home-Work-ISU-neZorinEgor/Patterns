@@ -27,7 +27,7 @@ class StorehouseService:
 
     def set_block_time(self, new_block_time) -> dict:
         old = SettingsManager().settings.block_time
-        SettingsManager().settings.block_time = new_block_time
+        SettingsManager().update_setting_in_file("block_time", new_block_time)
         return {
             "ok": True,
             "old_time": old,

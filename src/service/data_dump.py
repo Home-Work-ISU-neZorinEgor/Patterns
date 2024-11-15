@@ -7,11 +7,13 @@ from src.models.range import Range
 from src.models.recipe import Recipe
 from src.models.storehouse_transaction import StorehouseTransaction
 from src.reports.json_report import JSONReport
+from src.settings_manager import SettingsManager
 from src.storage import DataStorage
 from src.utils.validator import Validator
 
 
 class DataDumpService:
+    # TODO убрать в другое место
     MODEL_MAP = {
         "nomenclature": Nomenclature,
         "range": Range,
@@ -43,4 +45,6 @@ class DataDumpService:
             if model_class and hasattr(model_class, 'from_dict'):
                 for item in items:
                     self.storage.data[data_key].append(model_class.from_dict(item))
+            SettingsManager().settings.first_start_up = False
+            SettingsManager().update_setting_in_file("first_start_up", False)
         return f"Данные успешно загружены"
