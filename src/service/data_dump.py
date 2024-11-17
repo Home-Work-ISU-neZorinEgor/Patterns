@@ -1,5 +1,6 @@
 import json
 
+from src.core.observer import Subject
 from src.exceptions.http import ModelNotFounded
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.nomenclature import Nomenclature
@@ -10,6 +11,9 @@ from src.reports.json_report import JSONReport
 from src.settings_manager import SettingsManager
 from src.storage import DataStorage
 from src.utils.validator import Validator
+
+data_dump_subject = Subject()
+# data_dump_subject.attach(SettingsManager().settings)
 
 
 class DataDumpService:

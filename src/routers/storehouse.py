@@ -28,7 +28,7 @@ def calculate_osv(
         settings: Settings = Depends(DependencyContainer.settings),
         storage: DataStorage = Depends(DependencyContainer.storage),
 ):
-    return StorehouseService.osv(
+    return StorehouseService.calculate_osv(
         datetime_start=datetime_start,
         datetime_end=datetime_end,
         storehouse_uuid=storehouse_uuid,

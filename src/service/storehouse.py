@@ -2,10 +2,12 @@ import json
 from datetime import datetime
 from typing import List, Optional
 
+from src.models.osv import OSV
 from src.models.settings import Settings
 from src.models.storehouse_transaction import StorehouseTransaction
 from src.models.turnhover_calculator import TurnoverCalculator
 from src.reports.factory import ReportFactory
+from src.reports.json_report import JSONReport
 from src.settings_manager import SettingsManager
 from src.storage import DataStorage
 from src.utils.validator import Validator
@@ -40,9 +42,10 @@ class StorehouseService:
         return self.settings.block_time
 
     @staticmethod
-    def osv(datetime_start: float, datetime_end: float, storehouse_uuid: str, block_time: float, transactions: List[StorehouseTransaction]):
+    def calculate_osv(datetime_start: float, datetime_end: float, storehouse_uuid: str, block_time: float, transactions: List[StorehouseTransaction]):
         Validator.validate(datetime_start, type_=float)
         Validator.validate(datetime_end, type_=float)
+        Validator.validate(transactions, type_=List[StorehouseTransaction])
         # Фильтрация транзакций по временному диапазону
         relevant_transactions = [
             t for t in transactions
@@ -71,11 +74,13 @@ class StorehouseService:
             turnover = t['turnover']
             initial = initial_balance.get(nomenclature, 0)
             final_balance = initial + turnover
-            osv.append({
-                "nomenclature": nomenclature,
-                "initial_balance": initial,
-                "turnover": turnover,
-                "final_balance": final_balance
-            })
+            osv.append(
+                OSV.create(
+                    nomenclature_name=nomenclature,
+                    initial_balance=initial,
+                    turnover=turnover,
+                    final_balance=final_balance
+                )
+            )
 
-        return osv
+        return [json.loads(JSONReport().create(o)) for o in osv]

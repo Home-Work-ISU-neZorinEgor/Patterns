@@ -1,14 +1,20 @@
 import json
 import os
 
+from src.core.model import BaseModel
+from src.core.observer import Observer, EventType
 from src.core.report import ReportFormatEnum
 from src.exceptions.proxy import ErrorProxy
 from src.exceptions.custom import InvalidTypeException, UnsupportableReportFormatException
 from src.models.settings import Settings
 
 
-class SettingsManager:
+class SettingsManager(Observer):
     """Класс для управления настройками с интеграцией ErrorProxy."""
+
+    def check_statement(self, event_type: EventType, entity: BaseModel):
+        # TODO
+        pass
 
     file_name = "settings.json"
     __settings = Settings()

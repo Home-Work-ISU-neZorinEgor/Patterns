@@ -15,7 +15,6 @@ class DataStorage(Observer):
                             raise HTTPException(detail="Данная номенклатура есть в существующем рецепте.", status_code=409)
 
             case EventType.UPDATE_NOMENCLATURE:
-                print(self.__data[DataStorage.transaction_id()])
                 # Меняем номенклатуры в рецептах
                 for recipe in self.__data[DataStorage.recipe_id()]:
                     for ingredients in recipe.ingredients:
