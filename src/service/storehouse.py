@@ -83,4 +83,4 @@ class StorehouseService:
                 )
             )
 
-        return [json.loads(JSONReport().create(o)) for o in osv]
+        return osv

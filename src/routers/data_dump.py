@@ -2,6 +2,7 @@ import json
 
 from fastapi import APIRouter, Depends, BackgroundTasks, UploadFile, File
 
+from src.core.observer import Subject
 from src.dependency import DependencyContainer
 from src.service.data_dump import DataDumpService
 from src.storage import DataStorage

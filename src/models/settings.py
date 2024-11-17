@@ -14,7 +14,6 @@ from src.reports.xml_report import XMLReport
 class Settings:
     """Модель настроек с кастомными ошибками."""
     __path_to_settings_file: str = ""
-
     __inn: str = "Default value"
     __account: str = "Default value"
     __correspondent_account: str = "Default value"

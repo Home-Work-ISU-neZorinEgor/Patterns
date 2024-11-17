@@ -1,6 +1,6 @@
 import json
 
-from src.core.observer import Subject
+from src.core.observer import Subject, EventType
 from src.exceptions.http import ModelNotFounded
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.nomenclature import Nomenclature
@@ -13,7 +13,7 @@ from src.storage import DataStorage
 from src.utils.validator import Validator
 
 data_dump_subject = Subject()
-# data_dump_subject.attach(SettingsManager().settings)
+data_dump_subject.attach(SettingsManager())
 
 
 class DataDumpService:
@@ -49,6 +49,5 @@ class DataDumpService:
             if model_class and hasattr(model_class, 'from_dict'):
                 for item in items:
                     self.storage.data[data_key].append(model_class.from_dict(item))
-            SettingsManager().settings.first_start_up = False
-            SettingsManager().update_setting_in_file("first_start_up", False)
+            data_dump_subject.notify(event_type=EventType.ON_SAVE_DUMP, entity=None)
         return f"Данные успешно загружены"

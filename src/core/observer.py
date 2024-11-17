@@ -9,6 +9,8 @@ class EventType(Enum):
     DELETE_NOMENCLATURE = 0
     UPDATE_NOMENCLATURE = 1
 
+    ON_SAVE_DUMP = 2
+
 
 class Observer(ABC):
     @abstractmethod
@@ -31,7 +33,7 @@ class Subject:
         if observer in self.__observers:
             self.__observers.remove(observer)
 
-    def notify(self, event_type: EventType, entity: BaseModel):
+    def notify(self, event_type: EventType, entity: BaseModel | None):
         for observer in self.__observers:
             observer.check_statement(event_type=event_type, entity=entity)
 
