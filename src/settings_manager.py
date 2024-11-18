@@ -1,14 +1,23 @@
 import json
 import os
 
+from src.core.model import BaseModel
+from src.core.observer import Observer, EventType
 from src.core.report import ReportFormatEnum
 from src.exceptions.proxy import ErrorProxy
 from src.exceptions.custom import InvalidTypeException, UnsupportableReportFormatException
 from src.models.settings import Settings
+from src.reports.json_report import JSONReport
 
 
-class SettingsManager:
+class SettingsManager(Observer):
     """Класс для управления настройками с интеграцией ErrorProxy."""
+
+    def check_statement(self, event_type: EventType, entity: BaseModel):
+        match event_type:
+            case EventType.ON_SAVE_DUMP:
+                self.__settings.first_start_up = False
+                self.update_setting_in_file("first_start_up", False)
 
     file_name = "settings.json"
     __settings = Settings()
@@ -65,5 +74,26 @@ class SettingsManager:
             for key, value in input_dict.items():
                 if hasattr(self.__settings, key):
                     setattr(self.__settings, key, value)
+        except Exception as ex:
+            self.set_exception(ex)
+
+    def update_setting_in_file(self, key: str, value) -> None:
+        """Обновляет значение настройки и сохраняет его в файле JSON."""
+        try:
+            # Проверяем, существует ли настройка с таким ключом
+            if not hasattr(self.__settings, key):
+                raise KeyError(f"Настройка '{key}' не найдена в Settings")
+
+            # Обновляем значение в объекте настроек
+            setattr(self.__settings, key, value)
+
+            # Генерируем JSON-представление настроек
+            settings_json = json.loads(JSONReport().create(self.__settings))
+            # Удаляем поле 'report_classes', если оно существует
+            settings_json.pop('report_classes', None)
+
+            # Записываем обновленные настройки в JSON-файл
+            with open(self.settings.path_to_settings_file, "w", encoding="utf-8") as f:
+                json.dump(settings_json, f, indent=4, ensure_ascii=False)
         except Exception as ex:
             self.set_exception(ex)

@@ -1,10 +1,12 @@
 import datetime
+import json
 
 from fastapi import APIRouter, Depends
 from typing import Optional, List
 
 from src.dependency import DependencyContainer
 from src.models.settings import Settings
+from src.reports.json_report import JSONReport
 from src.service.storehouse import StorehouseService
 from src.storage import DataStorage
 
@@ -18,6 +20,23 @@ def get_storehouse_transaction(
         storage: DataStorage = Depends(DependencyContainer.storage),
 ):
     return StorehouseService(settings=settings, storage=storage).get_transaction(sort_by=field)
+
+
+@router.get("/osv")
+def calculate_osv(
+        datetime_start: float,
+        datetime_end: float,
+        storehouse_uuid: str,
+        settings: Settings = Depends(DependencyContainer.settings),
+        storage: DataStorage = Depends(DependencyContainer.storage),
+):
+    return [json.loads(JSONReport().create(o)) for o in StorehouseService.calculate_osv(
+        datetime_start=datetime_start,
+        datetime_end=datetime_end,
+        storehouse_uuid=storehouse_uuid,
+        block_time=settings.block_time,
+        transactions=storage.data[DataStorage.transaction_id()]
+    )]
 
 
 @router.post("/stock_count")

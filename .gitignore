@@ -5,3 +5,5 @@
 /__pycache__/
 /src/contract.py
 /src/test.py
+!settings.json
+*.json
