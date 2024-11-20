@@ -8,5 +8,6 @@
     "name": "NeZorinEgor",
     "path_to_settings_file": "/home/egor/Develop/HomeWork/Patterns/settings.json",
     "report_format": 3,
-    "type_of_ownership": "SOLID"
+    "type_of_ownership": "SOLID",
+    "logging_level": 0
 }

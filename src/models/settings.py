@@ -1,5 +1,4 @@
 import datetime
-from pathlib import Path
 
 from src.core.report import ReportFormatEnum
 from src.exceptions.custom import InvalidTypeException, InvalidLengthException
@@ -23,6 +22,7 @@ class Settings:
     __block_time: int | float = datetime.datetime.now(datetime.UTC).timestamp()
     __report_format: ReportFormatEnum = ReportFormatEnum.CSV
     __first_start_up: bool = True
+    __logging_level: int = 1
     __report_classes = {
         ReportFormatEnum.CSV: CSVReport,
         ReportFormatEnum.MARKDOWN: MarkdownReport,
@@ -30,6 +30,15 @@ class Settings:
         ReportFormatEnum.XML: XMLReport,
         ReportFormatEnum.RTF: RTFReport,
     }
+
+    @property
+    def logging_level(self):
+        return self.__logging_level
+
+    @logging_level.setter
+    def logging_level(self, new_logging_level):
+        Validator.validate(new_logging_level, type_=int)
+        self.__logging_level = new_logging_level
 
     @property
     def first_start_up(self):
