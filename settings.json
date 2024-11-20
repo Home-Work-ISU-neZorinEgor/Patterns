@@ -1,13 +1,13 @@
 {
     "account": "40702810123",
     "bic": "044525225",
-    "block_time": 1731692005.559021,
+    "block_time": 1e+22,
     "correspondent_account": "38104000000",
-    "first_start_up": true,
+    "first_start_up": false,
     "inn": "123456789012",
+    "logging_level": 0,
     "name": "NeZorinEgor",
-    "path_to_settings_file": "/home/egor/Develop/HomeWork/Patterns/settings.json",
+    "path_to_settings_file": "./settings.json",
     "report_format": 3,
-    "type_of_ownership": "SOLID",
-    "logging_level": 0
+    "type_of_ownership": "SOLID"
 }

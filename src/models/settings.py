@@ -22,7 +22,7 @@ class Settings:
     __block_time: int | float = datetime.datetime.now(datetime.UTC).timestamp()
     __report_format: ReportFormatEnum = ReportFormatEnum.CSV
     __first_start_up: bool = True
-    __logging_level: int = 1
+    __logging_level: int = 0
     __report_classes = {
         ReportFormatEnum.CSV: CSVReport,
         ReportFormatEnum.MARKDOWN: MarkdownReport,

@@ -10,6 +10,7 @@ from src.models.settings import Settings
 from src.reports.json_report import JSONReport
 
 
+
 class SettingsManager(Observer):
     """Класс для управления настройками с интеграцией ErrorProxy."""
 
