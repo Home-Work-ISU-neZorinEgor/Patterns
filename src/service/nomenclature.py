@@ -2,7 +2,7 @@ import json
 
 from fastapi import HTTPException
 
-from src.core.observer import Subject, EventType
+from src.core.observable import Subject, EventType
 from src.models.nomenclature import Nomenclature
 from src.models.settings import Settings
 from src.reports.factory import ReportFactory

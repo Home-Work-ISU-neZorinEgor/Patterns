@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000 8001
+EXPOSE ${COMMAND_APP_PORT} ${QUERY_APP_PORT}

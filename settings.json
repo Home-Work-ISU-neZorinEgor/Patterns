@@ -7,7 +7,7 @@
     "inn": "123456789012",
     "logging_level": 0,
     "name": "NeZorinEgor",
-    "path_to_settings_file": "./settings.json",
+    "path_to_settings_file": "settings.json",
     "report_format": 3,
     "type_of_ownership": "SOLID"
 }

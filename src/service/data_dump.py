@@ -1,6 +1,6 @@
 import json
 
-from src.core.observer import Subject, EventType
+from src.core.observable import Subject, EventType
 from src.exceptions.http import ModelNotFounded
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.nomenclature import Nomenclature
