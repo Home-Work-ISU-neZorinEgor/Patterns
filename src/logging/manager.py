@@ -1,12 +1,23 @@
 import datetime
 
+from src.core.model import BaseModel
+from src.core.observable import Observable, EventType, Subject
 from src.logging.level import LogLevel
 from src.logging.logger import _Logger
 from src.settings_manager import SettingsManager
 from src.utils.validator import Validator
 
 
-class LoggerManager:
+class LoggerManager(Observable):
+    def check_statement(self, event_type: EventType, entity: BaseModel):
+        match event_type:
+            case event_type.DELETE_NOMENCLATURE:
+                self.logger(__name__).info("Номенклатура удалена")
+            case event_type.UPDATE_NOMENCLATURE:
+                self.logger(__name__).info("Номенклатура обновлена")
+            case event_type.ON_SAVE_DUMP:
+                self.logger(__name__).info("Save data at dump.")
+
     __instance = None
     __level: LogLevel = None
     __timezone: datetime.timezone = None
@@ -34,3 +45,5 @@ class LoggerManager:
 
 logger_manager = LoggerManager(level=LogLevel(SettingsManager().settings.logging_level))
 logger_manager.configure(timezone=datetime.timezone.utc)
+logging_subject = Subject()
+logging_subject.attach(logger_manager)

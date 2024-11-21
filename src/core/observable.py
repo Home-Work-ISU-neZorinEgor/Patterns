@@ -9,7 +9,6 @@ class EventType(Enum):
     DELETE_NOMENCLATURE = 0
     UPDATE_NOMENCLATURE = 1
     ON_SAVE_DUMP = 2
-    LOGGING_EVENT = 3
 
 
 class Observable(ABC):
