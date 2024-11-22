@@ -17,11 +17,11 @@ from src.settings_manager import SettingsManager
 
 @asynccontextmanager
 async def lifespan(instance: FastAPI):
-    manager = SettingsManager()
-    manager.from_json(os.path.join("settings.json"))
+    settings_manager = SettingsManager()
+    settings_manager.from_json(os.path.join("settings.json"))
     start_service = StartService(data_storage)
     start_service.create()
-    if not manager.settings.first_start_up:
+    if not settings_manager.settings.first_start_up:
         data_dump_path = open(os.path.join("dump.json"), "r")
         DataDumpService(data_storage).load_data_from_dump(json.loads(data_dump_path.read()))
     yield

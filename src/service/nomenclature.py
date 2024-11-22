@@ -2,7 +2,8 @@ import json
 
 from fastapi import HTTPException
 
-from src.core.observer import Subject, EventType
+from src.core.observable import Subject, EventType
+from src.logging.manager import logging_subject
 from src.models.nomenclature import Nomenclature
 from src.models.settings import Settings
 from src.reports.factory import ReportFactory
@@ -37,6 +38,7 @@ class NomenclatureService:
     def delete_nomenclature_by_uuid(self, uuid: str):
         nomenclature_by_id = [i for i in self.storage.data[DataStorage.nomenclature_id()] if i.uuid == uuid]
         if nomenclature_by_id:
+            logging_subject.notify(event_type=EventType.DELETE_NOMENCLATURE, entity=None)
             nomenclature_subject.notify(event_type=EventType.DELETE_NOMENCLATURE, entity=nomenclature_by_id[0])
         else:
             raise self.not_founded_by_uuid_exceptions
@@ -53,4 +55,5 @@ class NomenclatureService:
         update_nomenclature = Nomenclature.from_dict(nomenclature)
         # self.storage.data[DataStorage.nomenclature_id()][idx] = update_nomenclature
         nomenclature_subject.notify(event_type=EventType.DELETE_NOMENCLATURE, entity=update_nomenclature)
+        logging_subject.notify(event_type=EventType.UPDATE_NOMENCLATURE, entity=None)
         return "ok"

@@ -1,17 +1,17 @@
 from fastapi import HTTPException
 
 from src.core.model import BaseModel
-from src.core.observer import Observer, EventType
+from src.core.observable import Observable, EventType
 
 
-class DataStorage(Observer):
+class DataStorage(Observable):
     def check_statement(self, event_type: EventType, entity: BaseModel):
         match event_type:
             case EventType.DELETE_NOMENCLATURE:
                 # Пробегаемся по номенклатурам в рецептах
                 for recipe in self.__data[DataStorage.recipe_id()]:
                     for ingredients in recipe.ingredients:
-                        if ingredients.nomenclature == entity:
+                        if ingredients.nomenclature.uuid == entity.uuid:
                             raise HTTPException(detail="Данная номенклатура есть в существующем рецепте.", status_code=409)
 
             case EventType.UPDATE_NOMENCLATURE:

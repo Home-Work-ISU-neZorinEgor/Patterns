@@ -2,7 +2,7 @@ import json
 import os
 
 from src.core.model import BaseModel
-from src.core.observer import Observer, EventType
+from src.core.observable import Observable, EventType
 from src.core.report import ReportFormatEnum
 from src.exceptions.proxy import ErrorProxy
 from src.exceptions.custom import InvalidTypeException, UnsupportableReportFormatException
@@ -10,7 +10,7 @@ from src.models.settings import Settings
 from src.reports.json_report import JSONReport
 
 
-class SettingsManager(Observer):
+class SettingsManager(Observable):
     """Класс для управления настройками с интеграцией ErrorProxy."""
 
     def check_statement(self, event_type: EventType, entity: BaseModel):

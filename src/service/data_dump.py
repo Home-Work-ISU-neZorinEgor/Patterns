@@ -1,7 +1,8 @@
 import json
 
-from src.core.observer import Subject, EventType
+from src.core.observable import Subject, EventType
 from src.exceptions.http import ModelNotFounded
+from src.logging.manager import logging_subject
 from src.models.group_nomenclature import GroupNomenclature
 from src.models.nomenclature import Nomenclature
 from src.models.range import Range
@@ -40,6 +41,7 @@ class DataDumpService:
                 dump_report[key].append(json.loads(JSONReport().create(model)))
         with open(f"{dump_filename}.json", "w+") as f:
             f.write(json.dumps(dump_report, indent=4, ensure_ascii=False))
+        logging_subject.notify(event_type=EventType.ON_SAVE_DUMP, entity=None)
 
     def load_data_from_dump(self, file_content):
         for data_key, items in file_content.items():
